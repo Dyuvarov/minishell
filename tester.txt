@@ -80,4 +80,5 @@ ls; |ls;
 echo "
 echo '
 echo 123 | grep "
-
+echo 123 >> 1 >> 2 > 3 >>4
+cat test > 1 >> 2 > 3 > 4
