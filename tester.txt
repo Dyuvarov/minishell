@@ -1,0 +1,83 @@
+1
+2 
+3 1
+4 12
+5 ""
+6 "ABS"
+7 "HOME - $HOME"
+8 "\t\n\$\"\\"
+9 "H \t O\\M\$E"
+10 ''
+11 'ABS'
+12 ''
+13 'HOME - $HOME'
+14 '\t\n\$\"\\'
+15 'H \t O\\M\$E'
+16 '    '
+17 ABS"ABS"
+18 Iter'Soul'
+19 "My address"' is 1234!'
+20 'My address is not'"1234!@!"
+21 ABS"ABS"'ABS'
+22 123 567
+23 I\'t is PATH - $PATH
+24 $HOME is here
+25 \$HOME is here 123 !
+26 Call of "wild"
+27 foreshadowing 'is' here
+28 "I \'" 'm' \ LOTAR!
+29 'I' ' am' ' here!' " Help " me " if you can"!
+echo $PATH
+cat $PAT"H"
+'e''c''h''o' 123
+"ec"ho 123
+pwd
+echo < hello.txt
+echo<hi.
+cat > hello.txt
+exit 123 > log
+env 123>log'log'
+cat 123 | echo
+cat 456|echo
+cat 789| echo
+cat 1011 |echo
+w |echo
+w|q
+w|q 123
+w>test.txt|q
+w > test.txt | q
+w < test.txt | q 123
+w < 1 < 2 < 3 < 4
+w > 1 > 2 > 3 > 4
+w > in < out
+w > in1 <out1 >in2 <out2 >in3 <out3
+cat > in1 <out1 >in2 <out2 >in3 <out3 | grep 123
+cat > in | grep 123 > in
+cat 123 > in < out | grep > in
+echo 123 > in < out | grep 123 > in
+echo 123 > in < out | grep 123 > in < out
+echo 123 > in < out | grep 123 > in < out | xargs
+echo 123 > in < out | grep 123 > in < out | xargs 123
+echo ; ls
+echo;ls
+echo ; ls ;
+echo 123 | grep 123 ; ls
+cat t;ls|grep 123
+ls ; ls;grep ; ls
+"l"s \|$HOME\| ; cd /; q|grep -n 123
+ls /bin || ;
+ls $HOME|
+unset
+unset env PATH
+export
+pwd;
+q;;
+w; ;
+echo; |
+cat;|
+cat; | pwd
+ls; |ls;
+echo "
+echo '
+echo 123 | grep "
+
