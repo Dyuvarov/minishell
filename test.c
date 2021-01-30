@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/23 14:13:34 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/29 23:58:03 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/01/30 15:53:51 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,12 @@ void	print_cmd(t_cmd *cmd)
 	{
 		printf("\t\t%d) |%s|\n", i, cmd->args[i]);
 		i++;
+	}
+	if (ft_strncmp(cmd->command, "echo", 5) == 0)
+	{
+		ft_putchar_fd('|', 1);
+		ft_echo(cmd->args + 1);
+		ft_putchar_fd('|', 1);
 	}
 	printf("\n");
 	delcmd(cmd);

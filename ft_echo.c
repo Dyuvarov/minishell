@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:46:00 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/30 13:08:14 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/01/30 15:57:08 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_echo(char **args)
 		{
 			if (ft_puts(*args++) == -1)
 				return (-1);
-			if (*(args + 1) != NULL)
+			if (*args != NULL)
 				if (ft_putchar_fd(' ', 1) == -1)
 					return (-1);
 		}
