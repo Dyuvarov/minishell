@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:02:00 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/28 14:20:28 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/01/30 13:51:14 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ char			*get_cur_path(void);
 char			*get_env_var(char *name, char **env);
 char			*get_abs_path(char *dir, char *file_name);
 char			*get_abs_path_command(char *cmd, char *cdir, char **envpath);
+int				is_eof(void);
 int				get_size(char **buf);
 int				ft_getch(void);
 void			ft_ungetch(void);
