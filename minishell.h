@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:02:00 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/31 13:16:05 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/01/31 17:39:27 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ char			*get_abs_path_command(char *cmd, char **envpath);
 int				set_last_red_file(t_cmd **cmd);
 int				is_eof(void);
 int				get_size(char **buf);
+int				increase_shlvl(char **env);
 int				ft_getch(void);
 void			ft_ungetch(void);
 int				skip_spaces(void);

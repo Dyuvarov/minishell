@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/23 14:13:34 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/31 14:48:21 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/01/31 18:02:16 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,6 @@ void	print_cmd(t_cmd *cmd)
 		printf("\t\t%d) |%s|\n", i, cmd->args[i]);
 		i++;
 	}
-	printf("\n");
-	printf("\nECHO:\n");
-	ft_echo(cmd->args + 1);
 	delcmd(cmd);
 }
 
@@ -115,19 +112,35 @@ void	print_line(int n)
 		ft_ungetch();
 }
 
+char **copy_env(char **env)
+{
+	int sz;
+	char **cp;
+
+	sz = get_size(env);
+	printf("%d\n", sz);
+	cp = (char **)malloc(sizeof(char *) * (sz + 1));
+	cp[sz] = NULL;
+	while (--sz >= 0)
+		cp[sz] = ft_strdup(env[sz]);
+	return (cp);
+}
+
 int	main (int argc, char *argv[], char *env[])
 {
 	int			i;
 	int			n;
 	int			counter;
+	char		**cp;
 	t_cmd		**cmd;
 	s_envvar	*envv;
 
 	i = 0;
 	envv = (s_envvar *)malloc(sizeof(s_envvar));
+	cp = copy_env(env);
 	parse_envp(env, envv);
 	printf("ENV: \n");
-	ft_env(env);
+	ft_env(cp);
 	printf("\nPWD: \n");
 	ft_pwd();
 	printf("\n\n");
@@ -137,6 +150,9 @@ int	main (int argc, char *argv[], char *env[])
 		i = 0;
 		ft_ungetch();
 		counter++;
+		increase_shlvl(cp);
+		printf("ENV: \n");
+		ft_env(cp);
 		print_line(counter);
 		if ((cmd = parse_cmd_line(env, envv->path)) == NULL)
 		{
@@ -155,6 +171,10 @@ int	main (int argc, char *argv[], char *env[])
 	i = 0;
 	while (envv->path[i])
 		free(envv->path[i++]);
+	i = 0;
+	while (cp[i])
+		free(cp[i++]);
+	free(cp);
 	free(envv->path);
 	free(envv);
 	(void)argc;
