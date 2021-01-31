@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/23 14:13:34 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/30 16:46:59 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/01/31 14:14:48 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,10 @@ int	main (int argc, char *argv[], char *env[])
 		}
 		free(cmd);
 	}
+	i = 0;
+	while (envv->path[i])
+		free(envv->path[i++]);
+	free(envv->path);
 	free(envv);
 	(void)argc;
 	(void)argv;

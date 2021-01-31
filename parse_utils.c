@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 21:00:57 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/29 23:46:56 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/01/31 14:12:44 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int				parse_escaped_seq(char **buf, int index, int esc_all)
 
 	if ((c = ft_getch()) < 1 || c == '\n')
 		return (-1);
-
 	if (c == '$' || c == '\"' || c == '\\' || esc_all)
 	{
 		(*buf)[index] = c;
@@ -111,23 +110,23 @@ char			*parse_seq(char **env)
 	char	*seq;
 
 	i = 0;
+	n = 0;
 	seq = (char *)malloc(BUFFER_SIZE);
-	while ((c = ft_getch()) > 0 && !ft_isspace(c) && !ft_strchr(SPEC_CHARS, c))
+	while (seq && (c = ft_getch()) > 0 \
+			&& !ft_isspace(c) && !ft_strchr(SPEC_CHARS, c))
 	{
 		if ((n = parse_seq_base(&seq, c, i, env)) == -1)
 			break ;
 		i += n;
-		if ((seq = safe_realloc(seq, i, sizeof(*seq))) == NULL)
-			return (NULL);
+		seq = safe_realloc(seq, i, sizeof(*seq));
 	}
-	if (c < 1 || n == -1)
+	if (c < 1 || n == -1 || seq == NULL)
 	{
 		if (seq)
 			free(seq);
 		return (NULL);
 	}
-	if ((seq = normalize_arr(seq, i, sizeof(*seq))) == NULL)
-		return (NULL);
-	ft_ungetch();
+	if ((seq = normalize_arr(seq, i, sizeof(*seq))) != NULL)
+		ft_ungetch();
 	return (seq);
 }
