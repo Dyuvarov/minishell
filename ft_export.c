@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 22:17:01 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/28 13:54:47 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/01/31 14:43:02 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	is_correct_name(char *name, size_t len)
 static int	error(char *err_msg)
 {
 	ft_putendl_fd(err_msg, STDERR_FILENO);
-	return (-1);
+	return (1);
 }
 
 static int	change_evn_var(char *var, size_t name_size, char **env)
@@ -54,9 +54,9 @@ static int	print_env(char **env)
 	while (*env)
 	{
 		if (ft_puts("declare -x ") == -1)
-			return (-1);
+			return (errno);
 		if (ft_putendl_fd(*env++, 1) == -1)
-			return (-1);
+			return (errno);
 	}
 	return (0);
 }
@@ -81,7 +81,7 @@ int			ft_export(char **vars, char ***env)
 		{
 			if ((*env = ft_realloc(*env, sizeof(char *) * size, \
 					sizeof(char *) * (size + 2))) == NULL)
-				return (error("export: system error"));
+				return (ENOMEM);
 			(*env)[size] = var;
 			(*env)[++size] = NULL;
 		}

@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/23 14:13:34 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/31 14:14:48 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/01/31 14:48:21 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	print_cmd(t_cmd *cmd)
 		i++;
 	}
 	printf("\n");
+	printf("\nECHO:\n");
+	ft_echo(cmd->args + 1);
 	delcmd(cmd);
 }
 
@@ -125,8 +127,9 @@ int	main (int argc, char *argv[], char *env[])
 	envv = (s_envvar *)malloc(sizeof(s_envvar));
 	parse_envp(env, envv);
 	printf("ENV: \n");
-	while (env[i])
-		printf("\t\n|%s|", env[i++]);
+	ft_env(env);
+	printf("\nPWD: \n");
+	ft_pwd();
 	printf("\n\n");
 	counter = 0;
 	while (ft_getch() > 0)
