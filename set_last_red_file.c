@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 16:18:12 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/30 17:44:16 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/01/31 13:03:11 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	swap_files(t_cmd *c1, t_cmd *c2)
 	}
 }
 
-static void del_elem(t_cmd **cmd, int index)
+static void	del_elem(t_cmd **cmd, int index)
 {
 	delcmd(cmd[index]);
 	while (cmd[index + 1] != NULL)
@@ -58,6 +58,19 @@ static void	set_new_direct(t_cmd *true_cmd, t_cmd *file_cmd)
 		true_cmd->file_out = ft_strdup(file_cmd->file_out);
 }
 
+static int	set_file(t_cmd *true_cmd, t_cmd *file_cmd)
+{
+	if ((!true_cmd->file_in && file_cmd->file_in) \
+			|| (!true_cmd->file_out && file_cmd->file_out))
+	{
+		set_new_direct(true_cmd, file_cmd);
+		return (1);
+	}
+	else
+		swap_files(true_cmd, file_cmd);
+	return (0);
+}
+
 int			set_last_red_file(t_cmd **cmd)
 {
 	int		i;
@@ -73,15 +86,8 @@ int			set_last_red_file(t_cmd **cmd)
 			true_cmd = cmd[i];
 		else if (true_cmd != NULL)
 		{
-			if ((!true_cmd->file_in && cmd[i]->file_in) \
-					|| (!true_cmd->file_out && cmd[i]->file_out))
-			{
-				set_new_direct(true_cmd, cmd[i]);
-				del_elem(cmd, i);
-				i--;
-			}
-			else
-				swap_files(true_cmd, cmd[i]);
+			if (set_file(true_cmd, cmd[i]))
+				del_elem(cmd, i--);
 		}
 		else
 			return (-1);
