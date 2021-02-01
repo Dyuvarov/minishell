@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/23 14:13:34 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/01 14:27:25 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/01 15:40:20 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,8 @@ void	print_cmd(t_cmd *cmd)
 int	main (int argc, char *argv[], char *env[])
 {
 	int			i;
-	int			n;
-	int			counter;
+	//int			n;
+	//int			counter;
 	char		**cp;
 	t_cmd		**cmd;
 	s_envvar	*envv;
@@ -148,7 +148,22 @@ int	main (int argc, char *argv[], char *env[])
 	printf("\nPWD: \n");
 	ft_pwd();
 	printf("\n\n");
-	counter = 0;
+	//counter = 0;
+	cmd = parse_cmd_line(env, envv->path);
+	if(ft_strncmp(cmd[i]->command, "export", 7) == 0)
+	{
+		printf("|sz_n: %d, sz_o: %d, sz_a: %d|\n", get_size(cp), get_size(env), get_size(cmd[i]->args));
+		char *t = (get_env_var("SHLVL", cp));
+		increase_shlvl(t, &cp);
+	//	ft_export(cmd[i]->args + 1, &cp);
+		printf("ENV: \n");
+		ft_env(cp);
+		decrease_shlvl(t, &cp);
+		printf("ENV: \n");
+		ft_env(cp);
+	}
+	print_cmd(cmd[i]);
+	/*
 	while (ft_getch() > 0)
 	{
 		i = 0;
@@ -186,6 +201,7 @@ int	main (int argc, char *argv[], char *env[])
 	free(cp);
 	free(envv->path);
 	free(envv);
+	*/
 	(void)argc;
 	(void)argv;
 }
