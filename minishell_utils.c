@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 13:42:04 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/31 18:03:29 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/01 13:52:36 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,30 +43,23 @@ char	*get_env_var(char *name, char **env)
 	return (NULL);
 }
 
-int		increase_shlvl(char **env)
+int		increase_shlvl(char ***env)
 {
-	char	*shlvl_var;
+	char	*shlvl_var[2];
 	char	*shlvl_val;
-	char	*eqsign;
-	size_t	len;
+	int		err;
 
-	len = 5;
-	shlvl_val = NULL;
-	while (*env && shlvl_val == NULL)
-	{
-		eqsign = ft_strchr(*env, '=');
-		if ((size_t)(eqsign - *env) == len)
-			if (ft_strnstr(*env, "SHLVL", len))
-				shlvl_val = (eqsign + 1);
-		env++;
-	}
-	if (*env == NULL || (shlvl_val = ft_itoa(ft_atoi(shlvl_val) + 1)) == NULL)
+	if ((shlvl_val = get_env_var("SHLVL", *env)) == NULL)
+		shlvl_val = "";
+	if ((shlvl_val = ft_itoa(ft_atoi(shlvl_val) + 1)) == NULL)
 		return (-1);
-	env--;
-	(*env)[eqsign - *env + 1] = '\0';
-	shlvl_var = ft_strjoin(*env, shlvl_val);
-	free(*env);
+	shlvl_var[0] = ft_strjoin("SHLVL=", shlvl_val);
+	shlvl_var[1] = NULL;
+	ft_putendl_fd(shlvl_var[0], 1);
 	free(shlvl_val);
-	*env = shlvl_var;
-	return (0);
+	if (shlvl_var[0] == NULL)
+		return (-1);
+	err = ft_export(shlvl_var, env);
+	free(shlvl_var[0]);
+	return (err);
 }

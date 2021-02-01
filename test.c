@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/23 14:13:34 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/31 18:02:16 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/01 14:27:25 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,6 @@ void parse_envp(char **envp, s_envvar *envvar)
 			envvar->path = ft_split(envp[i] + 5, ':');
 		++i;
 	}
-}
-
-void	print_cmd(t_cmd *cmd)
-{
-	int i;
-
-	i = 0;
-	printf("COMMAND: |%s|\n\t", cmd->command);
-	printf("FILE_IN: |%s|\t FILE_OUT: |%s|\t PIPE: |%d|\t APPEND: |%d|\n\t", cmd->file_in, cmd->file_out, cmd->fl_pipe, cmd->fl_append);
-	printf("ARGS:\n");
-	while (cmd->args[i])
-	{
-		printf("\t\t%d) |%s|\n", i, cmd->args[i]);
-		i++;
-	}
-	delcmd(cmd);
 }
 
 char		*cmd_as_line(t_cmd *cmd)
@@ -114,16 +98,36 @@ void	print_line(int n)
 
 char **copy_env(char **env)
 {
+	int	i;
 	int sz;
 	char **cp;
 
 	sz = get_size(env);
-	printf("%d\n", sz);
 	cp = (char **)malloc(sizeof(char *) * (sz + 1));
-	cp[sz] = NULL;
-	while (--sz >= 0)
-		cp[sz] = ft_strdup(env[sz]);
+	i = 0;
+	while (i < sz)
+	{
+		cp[i] = ft_strdup(env[i]);
+		i++;
+	}
+	cp[i] = NULL;
 	return (cp);
+}
+
+void	print_cmd(t_cmd *cmd)
+{
+	int i;
+
+	i = 0;
+	printf("COMMAND: |%s|\n\t", cmd->command);
+	printf("FILE_IN: |%s|\t FILE_OUT: |%s|\t PIPE: |%d|\t APPEND: |%d|\n\t", cmd->file_in, cmd->file_out, cmd->fl_pipe, cmd->fl_append);
+	printf("ARGS:\n");
+	while (cmd->args[i])
+	{
+		printf("\t\t%d) |%s|\n", i, cmd->args[i]);
+		i++;
+	}
+	delcmd(cmd);
 }
 
 int	main (int argc, char *argv[], char *env[])
@@ -150,19 +154,24 @@ int	main (int argc, char *argv[], char *env[])
 		i = 0;
 		ft_ungetch();
 		counter++;
-		increase_shlvl(cp);
+		increase_shlvl(&cp);
 		printf("ENV: \n");
 		ft_env(cp);
-		print_line(counter);
+	//	print_line(counter);
 		if ((cmd = parse_cmd_line(env, envv->path)) == NULL)
 		{
 			printf("ERROR!\n\n");
 			while ((n = ft_getch()) != '\n')
 				;
 		}
-		set_last_red_file(cmd);
+	//	set_last_red_file(cmd);
 		while (cmd && cmd[i])
 		{
+			if(ft_strncmp(cmd[i]->command, "export", 7) == 0)
+			{
+				printf("|sz_n: %d, sz_o: %d, sz_a: %d|\n", get_size(cp), get_size(env), get_size(cmd[i]->args));
+				ft_export(cmd[i]->args + 1, &cp);
+			}
 			print_cmd(cmd[i]);
 			i++;
 		}
