@@ -6,7 +6,11 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/23 14:13:34 by fmoaney           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2021/01/30 16:46:59 by fmoaney          ###   ########.fr       */
+=======
+/*   Updated: 2021/02/01 15:40:20 by fmoaney          ###   ########.fr       */
+>>>>>>> fmoaney
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +38,7 @@ void parse_envp(char **envp, s_envvar *envvar)
 	}
 }
 
+<<<<<<< HEAD
 void	print_cmd(t_cmd *cmd)
 {
 	int i;
@@ -51,6 +56,8 @@ void	print_cmd(t_cmd *cmd)
 	delcmd(cmd);
 }
 
+=======
+>>>>>>> fmoaney
 char		*cmd_as_line(t_cmd *cmd)
 {
 	int i;
@@ -112,45 +119,149 @@ void	print_line(int n)
 	while (i-- >= 0)
 		ft_ungetch();
 }
+<<<<<<< HEAD
 /*
 int	main (int argc, char *argv[], char *env[])
 {
 	int			i;
 	int			n;
 	int			counter;
+=======
+
+char **copy_env(char **env)
+{
+	int	i;
+	int sz;
+	char **cp;
+
+	sz = get_size(env);
+	cp = (char **)malloc(sizeof(char *) * (sz + 1));
+	i = 0;
+	while (i < sz)
+	{
+		cp[i] = ft_strdup(env[i]);
+		i++;
+	}
+	cp[i] = NULL;
+	return (cp);
+}
+
+void	print_cmd(t_cmd *cmd)
+{
+	int i;
+
+	i = 0;
+	printf("COMMAND: |%s|\n\t", cmd->command);
+	printf("FILE_IN: |%s|\t FILE_OUT: |%s|\t PIPE: |%d|\t APPEND: |%d|\n\t", cmd->file_in, cmd->file_out, cmd->fl_pipe, cmd->fl_append);
+	printf("ARGS:\n");
+	while (cmd->args[i])
+	{
+		printf("\t\t%d) |%s|\n", i, cmd->args[i]);
+		i++;
+	}
+	delcmd(cmd);
+}
+
+int	main (int argc, char *argv[], char *env[])
+{
+	int			i;
+	//int			n;
+	//int			counter;
+	char		**cp;
+>>>>>>> fmoaney
 	t_cmd		**cmd;
 	s_envvar	*envv;
 
 	i = 0;
 	envv = (s_envvar *)malloc(sizeof(s_envvar));
+<<<<<<< HEAD
 	parse_envp(env, envv);
 	printf("ENV: \n");
 	while (env[i])
 		printf("\t\n|%s|", env[i++]);
 	printf("\n\n");
 	counter = 0;
+=======
+	cp = copy_env(env);
+	parse_envp(env, envv);
+	printf("ENV: \n");
+	ft_env(cp);
+	printf("\nPWD: \n");
+	ft_pwd();
+	printf("\n\n");
+	//counter = 0;
+	cmd = parse_cmd_line(env, envv->path);
+	if(ft_strncmp(cmd[i]->command, "export", 7) == 0)
+	{
+		printf("|sz_n: %d, sz_o: %d, sz_a: %d|\n", get_size(cp), get_size(env), get_size(cmd[i]->args));
+		char *t = (get_env_var("SHLVL", cp));
+		increase_shlvl(t, &cp);
+	//	ft_export(cmd[i]->args + 1, &cp);
+		printf("ENV: \n");
+		ft_env(cp);
+		decrease_shlvl(t, &cp);
+		printf("ENV: \n");
+		ft_env(cp);
+	}
+	print_cmd(cmd[i]);
+	/*
+>>>>>>> fmoaney
 	while (ft_getch() > 0)
 	{
 		i = 0;
 		ft_ungetch();
 		counter++;
+<<<<<<< HEAD
 		print_line(counter);
+=======
+		increase_shlvl(&cp);
+		printf("ENV: \n");
+		ft_env(cp);
+	//	print_line(counter);
+>>>>>>> fmoaney
 		if ((cmd = parse_cmd_line(env, envv->path)) == NULL)
 		{
 			printf("ERROR!\n\n");
 			while ((n = ft_getch()) != '\n')
 				;
 		}
+<<<<<<< HEAD
 		set_last_red_file(cmd);
 		while (cmd && cmd[i])
 		{
+=======
+	//	set_last_red_file(cmd);
+		while (cmd && cmd[i])
+		{
+			if(ft_strncmp(cmd[i]->command, "export", 7) == 0)
+			{
+				printf("|sz_n: %d, sz_o: %d, sz_a: %d|\n", get_size(cp), get_size(env), get_size(cmd[i]->args));
+				ft_export(cmd[i]->args + 1, &cp);
+			}
+>>>>>>> fmoaney
 			print_cmd(cmd[i]);
 			i++;
 		}
 		free(cmd);
 	}
+<<<<<<< HEAD
 	free(envv);
 	(void)argc;
 	(void)argv;
 }
 */
+=======
+	i = 0;
+	while (envv->path[i])
+		free(envv->path[i++]);
+	i = 0;
+	while (cp[i])
+		free(cp[i++]);
+	free(cp);
+	free(envv->path);
+	free(envv);
+	*/
+	(void)argc;
+	(void)argv;
+}
+>>>>>>> fmoaney

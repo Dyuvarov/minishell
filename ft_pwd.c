@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:21:11 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/28 14:19:54 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/02 19:48:49 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ char	*get_cur_path(void)
 
 int		ft_pwd(void)
 {
-	int		err;
 	char	*path;
 
 	path = get_cur_path();
 	if (path == NULL)
-		return (-1);
-	err = ft_puts(path);
+		return (errno ? errno : ENOMEM);
+	errno = 0;
+	ft_putendl_fd(path, 1);
 	free(path);
-	return (err);
+	return (errno);
 }

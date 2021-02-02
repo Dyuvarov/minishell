@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 18:07:04 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/29 23:43:12 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/02 19:45:51 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char		**parse_args(char *command, char **env, char **envpath)
 	i = 0;
 	if (!(args = (char **)malloc(sizeof(char *) * BUFFER_SIZE)))
 		return (NULL);
-	args[i] = get_abs_path_command(command, get_cur_path(), envpath);
+	args[i] = get_abs_path_command(command, envpath);
 	while (args[i++] && !skip_spaces() \
 			&& (c = ft_getch()) > 0 \
 			&& !ft_strchr(SPEC_CHARS, c))
@@ -140,7 +140,8 @@ t_cmd			**parse_cmd_line(char **env, char **envpath)
 	t_cmd	**res;
 
 	i = 0;
-	res = (t_cmd **)malloc(sizeof(t_cmd *) * BUFFER_SIZE);
+	if ((res = (t_cmd **)malloc(sizeof(t_cmd *) * BUFFER_SIZE)) == NULL)
+		return (NULL);
 	res[i] = parse_cmd(env, envpath);
 	while (res[i++] != NULL && (c = ft_getch()) > 0 && c != '\n')
 	{

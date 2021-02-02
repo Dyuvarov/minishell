@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:02:00 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/30 16:47:24 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/02 19:53:27 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@
 #  define BUFFER_SIZE 100
 # endif
 
-#ifndef G_PRESTR
-# define G_PRESTR "minishell->"
-#endif
+# ifndef G_PRESTR
+#  define G_PRESTR "minishell->"
+# endif
 
 # define SPEC_CHARS "\n><|;"
 
@@ -39,7 +39,7 @@ typedef struct	s_cmd
 	int			fl_append;
 	char		*file_in;
 	char		*file_out;
-	int 		fd[2];
+	int			fd[2];
 }				t_cmd;
 
 # define GET_OLD_SIZE(i) ((i) + BUFFER_SIZE - (i) % BUFFER_SIZE)
@@ -70,10 +70,12 @@ void			delcmd(void *command);
 char			*get_cur_path(void);
 char			*get_env_var(char *name, char **env);
 char			*get_abs_path(char *dir, char *file_name);
-char			*get_abs_path_command(char *cmd, char *cdir, char **envpath);
+char			*get_abs_path_command(char *cmd, char **envpath);
 int				set_last_red_file(t_cmd **cmd);
 int				is_eof(void);
 int				get_size(char **buf);
+int				decrease_shlvl(char *shlvl_val, char ***env);
+int				increase_shlvl(char *shlvl_val, char ***env);
 int				ft_getch(void);
 void			ft_ungetch(void);
 int				skip_spaces(void);
@@ -85,5 +87,5 @@ int				parse_squote(char **buf, int i);
 int				parse_dquote(char **buf, int i, char **env);
 char			*parse_dollar(char **env);
 t_cmd			**parse_cmd_line(char **env, char **envpath);
-void 			free_cmd(t_cmd **cmd);
+void			free_cmd(t_cmd **cmd);
 #endif

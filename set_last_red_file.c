@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 16:18:12 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/31 13:03:11 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/02 19:41:47 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	swap_files(t_cmd *c1, t_cmd *c2)
 {
 	t_cmd t;
 
+	free(c2->command);
 	c2->command = ft_strdup(c1->command);
 	free(c2->args[0]);
 	c2->args[0] = ft_strdup("");

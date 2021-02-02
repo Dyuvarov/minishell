@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:46:00 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/30 15:57:08 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/02 19:50:07 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_echo(char **args)
 	int fl_n;
 
 	fl_n = 0;
-	if (args != NULL)
+	if (args != NULL && *args != NULL)
 	{
 		if (ft_strncmp(*args, "-n", 3) == 0)
 		{
