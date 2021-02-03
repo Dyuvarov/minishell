@@ -6,7 +6,7 @@
 /*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:32:37 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/01/31 16:07:25 by ugreyiro         ###   ########.fr       */
+/*   Updated: 2021/02/03 15:16:12 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	call_func(t_cmd *cmd, char ** envp)
 		exec_ret = ft_env(envp);
 	else if (ft_strncmp(cmd->command, "export", ft_strlen(cmd->command)) == 0)
 		exec_ret = ft_export(args, &envp);
+	
 	else if (ft_strncmp(cmd->command, "pwd", ft_strlen(cmd->command)) == 0)
 		exec_ret = ft_pwd();
 	else

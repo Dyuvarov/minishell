@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 18:07:04 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/02 19:45:51 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/03 14:05:00 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,7 @@ static int		parse_filename(t_cmd *cmd, int is_out, char **env)
 	}
 	else
 		file = &cmd->file_out;
-	return (c < 1								\
-			|| skip_spaces()					\
-			|| (*file = parse_seq(env)) == NULL	\
-			|| skip_pipe_n_semicolon());
+	return (c < 1 || skip_spaces() || (*file = parse_seq(env)) == NULL);
 }
 
 /*
@@ -98,6 +95,7 @@ static t_cmd	*parse_cmd(char **env, char **envpath)
 {
 	int		c;
 	int		err;
+	void	**t;
 	t_cmd	*cmd;
 
 	if (skip_spaces() || (cmd = newcmd()) == NULL)
@@ -108,7 +106,12 @@ static t_cmd	*parse_cmd(char **env, char **envpath)
 			if ((c = ft_getch()) > 0)
 			{
 				if (c == '<' || c == '>')
+				{
 					err = parse_filename(cmd, c == '>', env);
+					t = (void **)parse_args(cmd->command, env, envpath);
+					err |= skip_pipe_n_semicolon();
+					err |= merge_dpointer((void ***)&cmd->args, t ? ++t : t);
+				}
 				else if (c == '\n')
 					ft_ungetch();
 				cmd->fl_pipe = c == '|';
@@ -116,7 +119,7 @@ static t_cmd	*parse_cmd(char **env, char **envpath)
 	if (!cmd->command || !cmd->args || c < 1 || err)
 	{
 		delcmd(cmd);
-		return (NULL);
+		cmd = NULL;
 	}
 	return (cmd);
 }

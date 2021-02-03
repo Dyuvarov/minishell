@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 13:42:04 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/02 19:46:23 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/03 12:44:04 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,22 @@ int		increase_shlvl(char *shlvl_val, char ***env)
 	err = ft_export(shlvl_var, env);
 	free(shlvl_var[0]);
 	return (err);
+}
+
+int		merge_dpointer(void ***dst, void **p)
+{
+	int		i;
+
+	i = 0;
+	if (*dst == NULL || p == NULL)
+		return (-1);
+	while ((*dst)[i] != NULL)
+		i++;
+	while (*p != NULL && *dst != NULL)
+	{
+		(*dst)[i++] = *p++;
+		*dst =  safe_realloc(*dst, i, sizeof(**dst));
+	}
+	*dst = normalize_arr(*dst, i, sizeof(**dst));
+	return (*dst == NULL);
 }

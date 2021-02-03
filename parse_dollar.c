@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:05:49 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/25 15:54:15 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/03 15:06:04 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,18 @@ char	*parse_dollar(char **env)
 	if ((c = ft_getch()) > 0 && (ft_isalpha(c) || c == '_'))
 	{
 		name[i++] = c;
-		while ((c = ft_getch()) > 0 && (ft_isalnum(c) || c == '_'))
+		while (name && (c = ft_getch()) > 0 && (ft_isalnum(c) || c == '_'))
 		{
-			if ((name = safe_realloc(name, i, sizeof(*name))) == NULL)
-				return (NULL);
+			name = safe_realloc(name, i, sizeof(*name));
 			name[i++] = c;
 		}
+		name[i] = '\0';
+		res = get_env_var(name, env);
+		free(name);
 	}
-	name[i] = '\0';
-	res = get_env_var(name, env);
-	free(name);
-	ft_ungetch();
+	if (i == 0 && c == '?')
+		res = ft_strdup("$?");
+	else
+		ft_ungetch();
 	return (res);
 }
