@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 22:17:01 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/03 19:13:16 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/03 19:35:21 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static int	change_evn_var(char *var, size_t name_size, char **env)
 		if ((size_t)(eqsign - *env) == name_size)
 			if (ft_strncmp(*env, var, name_size) == 0)
 			{
-				*env = var;
+				free(*env);
+				*env = ft_strdup(var);
 				return (1);
 			}
 		env++;
