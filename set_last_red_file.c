@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 16:18:12 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/02 19:41:47 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/03 14:31:36 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ static void	swap_files(t_cmd *c1, t_cmd *c2)
 
 	free(c2->command);
 	c2->command = ft_strdup(c1->command);
-	free(c2->args[0]);
-	c2->args[0] = ft_strdup("");
 	t.file_in = c1->file_in;
 	t.file_out = c1->file_out;
 	t.fl_append = c1->fl_append;
@@ -85,8 +83,11 @@ int			set_last_red_file(t_cmd **cmd)
 	{
 		if (cmd[i]->command[0] != '\0')
 			true_cmd = cmd[i];
-		else if (true_cmd != NULL)
+		else if (true_cmd != NULL && (cmd[i]->file_in || cmd[i]->file_out))
 		{
+			merge_dpointer((void ***)&true_cmd->args, \
+					(void **)cmd[i]->args + 1);
+			cmd[i]->args[1] = NULL;
 			if (set_file(true_cmd, cmd[i]))
 				del_elem(cmd, i--);
 		}

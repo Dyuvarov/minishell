@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:02:00 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/02 19:53:27 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/03 12:45:07 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <dirent.h>
 # include <errno.h>
+# include <sys/wait.h>
 
 # include "libft.h"
 
@@ -76,6 +77,7 @@ int				is_eof(void);
 int				get_size(char **buf);
 int				decrease_shlvl(char *shlvl_val, char ***env);
 int				increase_shlvl(char *shlvl_val, char ***env);
+int				merge_dpointer(void ***dst, void **p);
 int				ft_getch(void);
 void			ft_ungetch(void);
 int				skip_spaces(void);
