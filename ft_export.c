@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 22:17:01 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/02 22:45:33 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/03 19:13:16 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ int			ft_export(char **vars, char ***env)
 			return (error("export: not a valid identifier"));
 		if (eqsign && !change_evn_var(var, name_size, *env))
 		{
-			ft_puts("\n HERE \n");
 			if ((*env = ft_realloc(*env, sizeof(char *) * size,
 					sizeof(char *) * (size + 2))) == NULL)
 				return (ENOMEM);
