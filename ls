@@ -1,1 +1,0 @@
-/home/gink/c/minishell
