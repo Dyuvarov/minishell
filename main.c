@@ -61,6 +61,7 @@ int main(int argc, char **argv, char **envp)
 	char		**envtmp;
 	char 		*shlvl;
 	int			i;
+	extern int	g_last_res;
 
 	(void)argc;
 	(void)argv;
@@ -85,6 +86,7 @@ int main(int argc, char **argv, char **envp)
 			i = 0;
 			while (cmd[i])
 			{
+				replace_dollar_question(cmd[i], g_last_res);
 				executor(cmd[i], &envtmp, tools);
 				++i;
 			}

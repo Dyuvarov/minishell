@@ -6,14 +6,12 @@
 /*   By: ugreyiro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 12:25:49 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/01/28 12:25:50 by ugreyiro         ###   ########.fr       */
+/*   Updated: 2021/02/04 23:18:50 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 #include "minishell.h"
-#include "errno.h"
-#include "string.h"
 
 static char	*create_error_message(const char *command)
 {
@@ -44,6 +42,8 @@ static void show_error_message(const char *command, const char *message)
 
 void handle_error(int code, const char *command)
 {
+	extern int g_last_res;
+
 	if (code == WRONG_COMMAND)
 		show_error_message(command,"command not found");
 	else if (code == MANY_ARGS)
@@ -52,6 +52,7 @@ void handle_error(int code, const char *command)
 		show_error_message(command, strerror(errno));
 	else if (code == FD_ERROR)
 		show_error_message(command, strerror(errno));
+	g_last_res = errno;
 }
 
 void handle_cd_error(char *path)

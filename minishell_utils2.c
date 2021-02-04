@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 11:41:18 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/04 14:37:08 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/04 18:49:21 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,30 +42,35 @@ char		*ft_strreplace(char *dst, const char *old, const char *new)
 	return (res);
 }
 
+static char	*replace_field(char *field, char *replace_val)
+{
+	char *tmp;
+	char *res;
+
+	tmp = field;
+	res = ft_strreplace(field, LRS, replace_val);
+	free(tmp);
+	return (res);
+}
+
 int			replace_dollar_question(t_cmd *cmd, int val)
 {
 	int		i;
-	char	*tmp;
 	char	*sval;
 
 	if ((sval = ft_itoa(val)) == NULL)
 		return (1);
-	tmp = cmd->command;
-	cmd->command = ft_strreplace(cmd->command, LRS, sval);
-	free(tmp);
-	tmp = cmd->file_in;
-	cmd->file_in = ft_strreplace(cmd->file_in, LRS, sval);
-	free(tmp);
-	tmp = cmd->file_out;
-	cmd->file_out = ft_strreplace(cmd->file_out, LRS, sval);
-	free(tmp);
+	if (cmd->command)
+		cmd->command = replace_field(cmd->command, sval);
+	if (cmd->file_in)
+		cmd->file_in = replace_field(cmd->file_in, sval);
+	if (cmd->file_out)
+		cmd->file_out = replace_field(cmd->file_out, sval);
 	i = 0;
 	while (cmd->args[i])
 	{
-		tmp = cmd->args[i];
-		if ((cmd->args[i] = ft_strreplace(cmd->args[i], LRS, sval)) == NULL)
+		if ((cmd->args[i] = replace_field(cmd->args[i], sval)) == NULL)
 			return (1);
-		free(tmp);
 		i++;
 	}
 	return (!cmd->command || !cmd->file_in || !cmd->file_out);
