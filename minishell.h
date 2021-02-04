@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:02:00 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/03 12:45:07 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/04 12:34:56 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int				get_size(char **buf);
 int				decrease_shlvl(char *shlvl_val, char ***env);
 int				increase_shlvl(char *shlvl_val, char ***env);
 int				merge_dpointer(void ***dst, void **p);
+char			*ft_strreplace(char *dst, const char *old, const char *new);
 int				ft_getch(void);
 void			ft_ungetch(void);
 int				skip_spaces(void);
