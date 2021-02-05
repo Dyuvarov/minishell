@@ -1,33 +1,23 @@
-#include "libft.h"
-#include <zconf.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/05 12:25:47 by fmoaney           #+#    #+#             */
+/*   Updated: 2021/02/05 13:36:20 by fmoaney          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-#include "executor/executor.h"
+#include "executor.h"
 
-void parse_PATH(char **envp, s_tools *tools)
+static char		**clone_envp(char **envp)
 {
-	int i;
-	char *tmp;
-
-	i = 0;
-	tools->path = NULL;
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-		{
-			tmp = envp[i] + 5;
-			tools->path = ft_split(tmp, ':');
-		}
-		++i;
-	}
-	tools->tmp_fd[0] = dup(0);
-	tools->tmp_fd[1] = dup(1);
-}
-
-char **clone_envp(char **envp)
-{
-	char **envtmp;
-	int i;
-	int len;
+	char	**envtmp;
+	int		i;
+	int		len;
 
 	i = 0;
 	while (envp[i])
@@ -49,51 +39,61 @@ char **clone_envp(char **envp)
 	return (envtmp);
 }
 
-void show_promt()
+static void		prepare_to_work(t_tools **tools, char ***clone_env, \
+		char **envp, void *unused)
 {
-	write(1, G_PRESTR, ft_strlen(G_PRESTR));	
+	if (!(*tools = malloc(sizeof(t_tools))))
+	{
+		handle_error(MALLOC_ERROR, "minishell");
+		exit(ENOMEM);
+	}
+	(*tools)->tmp_fd[0] = dup(0);
+	(*tools)->tmp_fd[1] = dup(1);
+	if (!(*clone_env = clone_envp(envp)))
+	{
+		handle_error(MALLOC_ERROR, "minishell");
+		exit(ENOMEM);
+	}
+	increase_shlvl(get_env_var("SHLVL", *clone_env), clone_env);
+	(void)unused;
 }
 
-int main(int argc, char **argv, char **envp)
+static void		set_signal(void)
+{
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, signal_handler);
+}
+
+void			show_promt(void)
+{
+	write(1, G_PRESTR, ft_strlen(G_PRESTR));
+}
+
+int				main(int argc, char **argv, char **envp)
 {
 	t_cmd		**cmd;
-	s_tools		*tools;
+	t_tools		*tools;
 	char		**envtmp;
-	char 		*shlvl;
 	int			i;
 	extern int	g_last_res;
 
-	(void)argc;
-	(void)argv;
-	if (!(tools = malloc(sizeof(s_tools))))
-		handle_error(MALLOC_ERROR, "minishell");
-	parse_PATH(envp, tools);
-	if (!(envtmp = clone_envp(envp)))
-		handle_error(MALLOC_ERROR, "minishell");
-	shlvl = get_env_var("SHLVL", envtmp);
-	increase_shlvl(shlvl, &envtmp);
+	prepare_to_work(&tools, &envtmp, envp, argv[argc]);
 	while (1)
 	{
-		signal(SIGINT, signal_handler);
-		signal(SIGQUIT, signal_handler);
+		set_signal();
 		show_promt();
-		cmd = parse_cmd_line(envtmp, tools->path);
-		if (!cmd)
+		if ((cmd = parse_cmd_line(envtmp)) == NULL)
 			minishell_exit();
-		if (cmd && (ft_strlen(cmd[0]->command) > 0))
+		if (ft_strlen(cmd[0]->command) > 0 && set_last_red_file(cmd) == 0)
 		{
-			set_last_red_file(cmd);
-			i = 0;
-			while (cmd[i])
+			i = -1;
+			while (cmd[++i])
 			{
 				replace_dollar_question(cmd[i], g_last_res);
 				executor(cmd[i], &envtmp, tools);
-				++i;
 			}
 		}
 		free_cmd(cmd);
 	}
-	return 0;
+	return (0);
 }
-
-

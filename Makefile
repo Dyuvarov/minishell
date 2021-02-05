@@ -2,8 +2,12 @@ NAME		= minishell
 INC_DIR		= ./executor
 SRC_DIR		= .
 CC			= gcc
-SRCS		= $(wildcard *.c)
-SRCS		+= ./executor/executor.c
+TEMP		= parse_line.c parse_dquote.c parse_squote.c parse_dollar.c parse_utils.c get_abs_path_command.c \
+			  get_abs_path_command2.c minishell_utils.c minishell_utils2.c set_last_red_file.c cmd.c free_cmd.c \
+			  ft_realloc.c free_dpointer.c error_handler.c signal_handler.c ft_cd.c ft_pwd.c ft_env.c ft_exit.c \
+			  ft_unset.c ft_export.c ft_echo.c ft_getch.c main.c
+SRCS		= $(addprefix $(SRC_DIR)/, $(TEMP))
+SRCS		+= ./executor/executor.c ./executor/executor2.c
 OBJS		= $(SRCS:.c=.o)
 LIBFT_DIR	= libft
 LIBS		= -L$(LIBFT_DIR) -lft

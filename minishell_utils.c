@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 13:42:04 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/03 12:44:04 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/05 12:54:00 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ int		get_size(char **buf)
 	while (*buf++)
 		size++;
 	return (size);
+}
+
+int		get_old_size(int i)
+{
+	return (i + BUFFER_SIZE - i % BUFFER_SIZE);
 }
 
 /*
@@ -41,32 +46,6 @@ char	*get_env_var(char *name, char **env)
 		env++;
 	}
 	return (NULL);
-}
-
-int		decrease_shlvl(char *shlvl_val, char ***env)
-{
-	int		err;
-	char	*shlvl_var[2];
-	
-	err = 0;
-	shlvl_var[1] = NULL;
-	if (shlvl_val != NULL)
-	{
-		if ((shlvl_val = ft_itoa(ft_atoi(shlvl_val) - 1)) == NULL)
-			return (-1);
-		shlvl_var[0] = ft_strjoin("SHLVL=", shlvl_val);
-		free(shlvl_val);
-		if (shlvl_var[0] == NULL)
-			return (-1);
-		err = ft_export(shlvl_var, env);
-		free(shlvl_var[0]);
-	}
-	else
-	{
-		shlvl_var[0] = ft_strdup("SHLVL");
-		err = ft_unset(shlvl_var, env);
-	}
-	return (err);
 }
 
 int		increase_shlvl(char *shlvl_val, char ***env)
@@ -99,7 +78,7 @@ int		merge_dpointer(void ***dst, void **p)
 	while (*p != NULL && *dst != NULL)
 	{
 		(*dst)[i++] = *p++;
-		*dst =  safe_realloc(*dst, i, sizeof(**dst));
+		*dst = safe_realloc(*dst, i, sizeof(**dst));
 	}
 	*dst = normalize_arr(*dst, i, sizeof(**dst));
 	return (*dst == NULL);

@@ -6,13 +6,11 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 11:41:18 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/04 18:49:21 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/05 12:25:03 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-#define LRS "$?"
 
 static char	*ft_strcpy(char *dst, char *src)
 {
@@ -48,7 +46,7 @@ static char	*replace_field(char *field, char *replace_val)
 	char *res;
 
 	tmp = field;
-	res = ft_strreplace(field, LRS, replace_val);
+	res = ft_strreplace(field, REPLACE_M, replace_val);
 	free(tmp);
 	return (res);
 }
@@ -76,18 +74,20 @@ int			replace_dollar_question(t_cmd *cmd, int val)
 	return (!cmd->command || !cmd->file_in || !cmd->file_out);
 }
 
-/*
-** Returns:
-**			if is command: 1, if is file: 0 else: -1
-*/
-
-int			is_true_cmd(t_cmd *cmd)
+char		**parse_path(char **envp)
 {
-	if (cmd && cmd->command[0] != 0 && cmd->args[0][0] != 0)
-		return (1);
-	else if (cmd && cmd->command[0] != 0 && cmd->args[0][0] == 0 \
-			&& (cmd->file_in || cmd->file_out))
-		return (0);
-	else
-		return (-1);
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+		{
+			tmp = envp[i] + 5;
+			return (ft_split(tmp, ':'));
+		}
+		++i;
+	}
+	return (NULL);
 }

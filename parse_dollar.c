@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:05:49 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/03 15:06:04 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/05 11:29:46 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*parse_dollar(char **env)
 		free(name);
 	}
 	if (i == 0 && c == '?')
-		res = ft_strdup("$?");
+		res = ft_strdup(REPLACE_M);
 	else
 		ft_ungetch();
 	return (res);

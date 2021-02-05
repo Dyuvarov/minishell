@@ -6,17 +6,11 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:25:17 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/02 19:47:46 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/05 12:49:24 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-#define IS_ABSDIR(p) ((p)[0] == '/')
-#define IS_CURDIR(p) ((p)[0] == '.' && (p)[1] == '/')
-#define IS_PARDIR(p) ((p)[0] == '.' && (p)[1] == '.' && (p)[2] == '/')
-#define IS_PATH(p) (ft_strchr((p), '/') != NULL)
-#define IS_EQUAL(s1, s2) (ft_strncmp((s1), (s2), ft_strlen(s1)) == 0)
 
 static char		*file_in_path(char *command, char **envpath)
 {
@@ -32,7 +26,7 @@ static char		*file_in_path(char *command, char **envpath)
 		{
 			errno = 0;
 			while ((entry = readdir(cur_dir)) != NULL \
-					&& !IS_EQUAL(entry->d_name, command))
+					&& !is_equal(entry->d_name, command))
 				;
 			closedir(cur_dir);
 			if (entry != NULL)
@@ -64,18 +58,18 @@ static int		init_abs_path(char *cmd, char *cdir, char **abs_path)
 {
 	char *tmp;
 
-	if (IS_ABSDIR(cmd))
+	if (cmd[0] == '/')
 	{
 		*abs_path = ft_strdup("");
 		return (1);
 	}
-	else if (IS_PARDIR(cmd))
+	else if (is_pardir(cmd))
 	{
 		tmp = ft_strrchr(cdir, '/');
 		*abs_path = join_path("", cdir, tmp - cdir);
 		return (3);
 	}
-	else if (IS_CURDIR(cmd))
+	else if (is_curdir(cmd))
 	{
 		*abs_path = ft_strdup(cdir);
 		return (2);
@@ -93,13 +87,13 @@ static char		*parse_part_of_path(char *cmd, char **path)
 	char *tmp;
 	char *tmp2;
 
-	if (IS_PARDIR(cmd))
+	if (is_pardir(cmd))
 	{
 		if ((tmp = ft_strrchr(*path, '/')) != NULL)
 			(*path)[tmp - *path] = '\0';
 		return (cmd + 3);
 	}
-	else if (IS_CURDIR(cmd))
+	else if (is_curdir(cmd))
 		return (cmd + 2);
 	else
 	{
@@ -114,15 +108,17 @@ static char		*parse_part_of_path(char *cmd, char **path)
 	}
 }
 
-char			*get_abs_path_command(char *cmd, char **envpath)
+char			*get_abs_path_command(char *cmd, char **env)
 {
 	char	*cdir;
 	char	*abs_path;
+	char	**envpath;
 
 	cdir = get_cur_path();
-	if (!cmd || !cdir || !envpath)
+	envpath = parse_path(env);
+	if (!cmd || !cdir)
 		return (NULL);
-	if (IS_PATH(cmd))
+	if (is_path(cmd))
 	{
 		cmd += init_abs_path(cmd, cdir, &abs_path);
 		while (cmd && abs_path)
@@ -131,10 +127,10 @@ char			*get_abs_path_command(char *cmd, char **envpath)
 	else
 	{
 		errno = 0;
-		if ((abs_path = file_in_path(cmd, envpath)) == NULL && \
-				(errno == 0 || errno == ENOENT))
+		if (!envpath || ((abs_path = file_in_path(cmd, envpath)) == NULL))
 			abs_path = get_abs_path(cdir, cmd);
 	}
 	free(cdir);
+	free(envpath);
 	return (abs_path);
 }

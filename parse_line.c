@@ -6,13 +6,11 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 18:07:04 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/03 14:05:00 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/05 14:23:21 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-#define IS_SYSERR(stdin_c, alloc_mem) (((stdin_c) < 1) || (alloc_mem) == NULL)
 
 /*
 ** Parse cmd arguments until meets '\n', '<', '>' or '|'
@@ -24,7 +22,7 @@
 ** Returns: parsed NULL-terminated array_of_args or NULL (if ERROR or EOF)
 */
 
-static char		**parse_args(char *command, char **env, char **envpath)
+static char		**parse_args(char *command, char **env)
 {
 	int		i;
 	int		c;
@@ -33,7 +31,7 @@ static char		**parse_args(char *command, char **env, char **envpath)
 	i = 0;
 	if (!(args = (char **)malloc(sizeof(char *) * BUFFER_SIZE)))
 		return (NULL);
-	args[i] = get_abs_path_command(command, envpath);
+	args[i] = get_abs_path_command(command, env);
 	while (args[i++] && !skip_spaces() \
 			&& (c = ft_getch()) > 0 \
 			&& !ft_strchr(SPEC_CHARS, c))
@@ -43,7 +41,7 @@ static char		**parse_args(char *command, char **env, char **envpath)
 			return (NULL);
 		args[i] = parse_seq(env);
 	}
-	if (IS_SYSERR(c, args[i - 1]) || !ft_strchr(SPEC_CHARS, c))
+	if (c < 1 || !args[i - 1] || !ft_strchr(SPEC_CHARS, c))
 		free_dpointer((void ***)&args, i != 0 && !args[i - 1] ? i - 1 : i);
 	else
 	{
@@ -67,6 +65,8 @@ static int		skip_pipe_n_semicolon(void)
 static int		parse_filename(t_cmd *cmd, int is_out, char **env)
 {
 	int		c;
+	int		err;
+	void	**t;
 	char	**file;
 
 	c = 1;
@@ -80,7 +80,12 @@ static int		parse_filename(t_cmd *cmd, int is_out, char **env)
 	}
 	else
 		file = &cmd->file_out;
-	return (c < 1 || skip_spaces() || (*file = parse_seq(env)) == NULL);
+	err = c < 1 || skip_spaces();
+	err |= (*file = parse_seq(env)) == NULL;
+	t = (void **)parse_args(cmd->command, env);
+	err |= skip_pipe_n_semicolon();
+	err |= merge_dpointer((void ***)&cmd->args, t ? ++t : t);
+	return (err);
 }
 
 /*
@@ -91,27 +96,21 @@ static int		parse_filename(t_cmd *cmd, int is_out, char **env)
 ** Returns: parsed cmd or NULL (if ERROR or EOF)
 */
 
-static t_cmd	*parse_cmd(char **env, char **envpath)
+static t_cmd	*parse_cmd(char **env)
 {
 	int		c;
 	int		err;
-	void	**t;
 	t_cmd	*cmd;
 
 	if (skip_spaces() || (cmd = newcmd()) == NULL)
 		return (NULL);
 	err = 0;
 	if ((cmd->command = parse_seq(env)))
-		if ((cmd->args = parse_args(cmd->command, env, envpath)))
+		if ((cmd->args = parse_args(cmd->command, env)))
 			if ((c = ft_getch()) > 0)
 			{
 				if (c == '<' || c == '>')
-				{
 					err = parse_filename(cmd, c == '>', env);
-					t = (void **)parse_args(cmd->command, env, envpath);
-					err |= skip_pipe_n_semicolon();
-					err |= merge_dpointer((void ***)&cmd->args, t ? ++t : t);
-				}
 				else if (c == '\n')
 					ft_ungetch();
 				cmd->fl_pipe = c == '|';
@@ -136,7 +135,7 @@ static t_cmd	*parse_cmd(char **env, char **envpath)
 ** Returns: parsed command lines or NULL (if ERROR or EOF)
 */
 
-t_cmd			**parse_cmd_line(char **env, char **envpath)
+t_cmd			**parse_cmd_line(char **env)
 {
 	int		i;
 	int		c;
@@ -145,15 +144,15 @@ t_cmd			**parse_cmd_line(char **env, char **envpath)
 	i = 0;
 	if ((res = (t_cmd **)malloc(sizeof(t_cmd *) * BUFFER_SIZE)) == NULL)
 		return (NULL);
-	res[i] = parse_cmd(env, envpath);
+	res[i] = parse_cmd(env);
 	while (res[i++] != NULL && (c = ft_getch()) > 0 && c != '\n')
 	{
 		ft_ungetch();
 		if ((res = safe_realloc(res, i, sizeof(*res))) == NULL)
 			return (NULL);
-		res[i] = parse_cmd(env, envpath);
+		res[i] = parse_cmd(env);
 	}
-	if (IS_SYSERR(c, res[i - 1]))
+	if (c < 1 || !res[i - 1])
 		free_dpointer((void ***)&res, i != 0 && !res[i - 1] ? i - 1 : i);
 	else
 		res = (t_cmd **)normalize_arr(res, i, sizeof(*res));
