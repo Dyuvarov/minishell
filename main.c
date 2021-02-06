@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 12:25:47 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/05 13:36:20 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/06 18:34:32 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int				main(int argc, char **argv, char **envp)
 		show_promt();
 		if ((cmd = parse_cmd_line(envtmp)) == NULL)
 			minishell_exit();
-		if (ft_strlen(cmd[0]->command) > 0 && set_last_red_file(cmd) == 0)
+		if ((cmd[0]->command[0] != 0 || cmd[1]) && !set_last_red_file(cmd))
 		{
 			i = -1;
 			while (cmd[++i])
