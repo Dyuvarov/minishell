@@ -1,32 +1,9 @@
-1
-2 
-3 1
-4 12
-5 ""
-6 "ABS"
-7 "HOME - $HOME"
-8 "\t\n\$\"\\"
-9 "H \t O\\M\$E"
-10 ''
-11 'ABS'
-12 ''
-13 'HOME - $HOME'
-14 '\t\n\$\"\\'
-15 'H \t O\\M\$E'
-16 '    '
-17 ABS"ABS"
-18 Iter'Soul'
-19 "My address"' is 1234!'
-20 'My address is not'"1234!@!"
-21 ABS"ABS"'ABS'
-22 123 567
-23 I\'t is PATH - $PATH
-24 $HOME is here
-25 \$HOME is here 123 !
-26 Call of "wild"
-27 foreshadowing 'is' here
-28 "I \'" 'm' \ LOTAR!
-29 'I' ' am' ' here!' " Help " me " if you can"!
+pwd
+env
+echo
+export
+unset
+cd
 echo $PATH
 cat $PAT"H"
 'e''c''h''o' 123

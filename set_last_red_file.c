@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 16:18:12 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/05 11:07:23 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/06 18:56:25 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static int	set_file(t_cmd *true_cmd, t_cmd *file_cmd)
 		swap_files(true_cmd, file_cmd);
 		if (file_cmd->file_in)
 			fd = open(file_cmd->file_in, O_CREAT | O_WRONLY \
-					| file_cmd->fl_append ? O_APPEND : O_TRUNC);
+					| (file_cmd->fl_append ? O_APPEND : O_TRUNC), 0666);
 		else
 			fd = open(file_cmd->file_out, O_RDONLY);
 		if (fd < 0)
