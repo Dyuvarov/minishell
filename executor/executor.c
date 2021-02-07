@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:32:37 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/07 14:23:40 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 15:23:32 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,19 +126,15 @@ void	executor(t_cmd *cmd, char ***envp, t_tools *tools)
 	signal(SIGINT, input_signal_handler);
 	signal(SIGQUIT, input_signal_handler);
 	args = cmd->args + 1;
-	if (!cmd->fl_pipe && ft_strequal(cmd->command, "cd"))
-		g_last_res = execute_cd(*args, *envp);
-	else if (!cmd->fl_pipe && ft_strequal(cmd->command, "unset"))
-		g_last_res = ft_unset(args, envp);
-	else if (!cmd->fl_pipe && ft_strequal(cmd->command, "export"))
-		execute_export(cmd, envp, tools);
-	else if (!cmd->fl_pipe && ft_strequal(cmd->command, "exit"))
-		g_last_res = ft_exit(args);
-	else if (cmd->fl_pipe)
+
+	if (cmd->fl_pipe)
 	{
 		pipe(cmd->fd);
 		execute_with_pipe(cmd, *envp);
 	}
+	else if (ft_strequal(cmd->command, "cd") || ft_strequal(cmd->command, "exit")
+		|| ft_strequal(cmd->command, "export") || ft_strequal(cmd->command, "unset"))
+		execute_in_current_process(cmd, envp, tools);
 	else if (cmd->file_in || cmd->file_out)
 		execute_with_redirection(cmd, *envp, tools->tmp_fd);
 	else

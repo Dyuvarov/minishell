@@ -1,17 +1,17 @@
-pwd
-env
-echo
-export
-unset
-cd
-echo $PATH
-cat $PAT"H"
-'e''c''h''o' 123
-"ec"ho 123
-pwd
-echo < hello.txt
-echo<hi.
-cat > hello.txt
++pwd
++env
++echo
++export
++unset
++cd
++echo $PATH
++cat $PAT"H"
++'e''c''h''o' 123
++"ec"ho 123
++pwd
++echo < hello.txt
++echo<hi.
++cat > hello.txt
 exit 123 > log
 env 123>log'log'
 cat 123 | echo

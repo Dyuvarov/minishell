@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:36:33 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/05 12:22:04 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 15:37:36 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	input_signal_handler(int sig)
 {
+	write(1, "\b\b  \b\b", 5);
 	if (sig == SIGINT)
 		write(1, "\n", 1);
 	else if (sig == SIGQUIT)
@@ -22,6 +23,7 @@ void	input_signal_handler(int sig)
 
 void	signal_handler(int sig)
 {
+	write(1, "\b\b  \b\b", 5);
 	if (sig == SIGINT)
 	{
 		write(1, "\n", 1);

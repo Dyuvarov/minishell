@@ -6,27 +6,24 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 12:56:58 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/07 14:22:13 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 15:37:05 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-int		execute_cd(char *new_path, char **env)
+int     execute_cd(char *new_path)
 {
-	int		res;
-	char	*abs_path;
-
-	if ((abs_path = get_abs_path_command(new_path, env)) == NULL)
-		return (1);
-	res = chdir(abs_path);
-	if (res < 0)
-		handle_cd_error(new_path);
-	free(abs_path);
-	return (res < 0 ? errno : 0);
+    int     res;
+	if (!new_path)
+		return (0);
+    res = chdir(new_path);
+    if (res < 0)
+        handle_cd_error(new_path);
+    return (res < 0 ? errno : 0);
 }
 
-void	execute_export(t_cmd *cmd, char ***env, t_tools *tools)
+void	execute_in_current_process(t_cmd *cmd, char ***env, t_tools *tools)
 {
 	extern int g_last_res;
 
@@ -42,7 +39,16 @@ void	execute_export(t_cmd *cmd, char ***env, t_tools *tools)
 		dup2(cmd->fd[1], 1);
 		close(cmd->fd[1]);
 	}
-	g_last_res = ft_export(cmd->args + 1, env);
+	if (ft_strequal(cmd->command, "cd"))
+		g_last_res = execute_cd(cmd->args[1], *env);
+	else if (ft_strequal(cmd->command, "unset"))
+		g_last_res = ft_unset(cmd->args + 1, env);
+	else if (ft_strequal(cmd->command, "export"))
+		g_last_res = ft_export(cmd->args + 1, env);
+	else if (ft_strequal(cmd->command, "exit"))
+		g_last_res = ft_exit(cmd->args + 1);
+	if (g_last_res == ENOMEM)
+		handle_error(MALLOC_ERROR, cmd->command);
 	if (cmd->file_in)
 		dup2(tools->tmp_fd[1], 1);
 }
