@@ -6,21 +6,22 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 12:56:58 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/07 15:46:56 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 15:56:28 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-int     execute_cd(char *new_path)
+int		execute_cd(char *new_path)
 {
-    int     res;
+	int	res;
+
 	if (!new_path)
 		return (0);
-    res = chdir(new_path);
-    if (res < 0)
-        handle_cd_error(new_path);
-    return (res < 0 ? errno : 0);
+	res = chdir(new_path);
+	if (res < 0)
+		handle_cd_error(new_path);
+	return (res < 0 ? errno : 0);
 }
 
 void	execute_in_current_process(t_cmd *cmd, char ***env, t_tools *tools)
@@ -31,11 +32,8 @@ void	execute_in_current_process(t_cmd *cmd, char ***env, t_tools *tools)
 	{
 		cmd->fd[1] = open(cmd->file_in, O_CREAT | O_RDWR | \
 				(cmd->fl_append ? O_APPEND : O_TRUNC), 0666);
-		if (cmd->fd[1] < 0)
-		{
-			handle_error(FD_ERROR, cmd->file_in);
+		if (cmd->fd[1] < 0 && handle_error(FD_ERROR, cmd->file_in))
 			return ;
-		}
 		dup2(cmd->fd[1], 1);
 		close(cmd->fd[1]);
 	}

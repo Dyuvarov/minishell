@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 17:42:53 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/07 12:30:31 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 15:50:58 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char		*get_abs_path(char *dir, char *file_name)
 char		*get_abs_parent(char *dir)
 {
 	char *tmp;
-	
+
 	tmp = ft_strrchr(dir, '/');
 	return (join_path("", dir, tmp - dir));
 }

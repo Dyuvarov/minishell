@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 12:25:47 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/07 10:59:56 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 15:57:38 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,8 @@ int				main(int argc, char **argv, char **envp)
 			while (cmd[++i])
 			{
 				if (prepare_cmd(cmd[i], envtmp) \
-					&& handle_error(MALLOC_ERROR, "minishell"))
-					break;
-
+				&& handle_error(MALLOC_ERROR, "minishell"))
+					break ;
 				executor(cmd[i], &envtmp, tools);
 			}
 		}
