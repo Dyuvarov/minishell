@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:32:37 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/06 19:20:26 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 10:34:37 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ int		call_func(t_cmd *cmd, char **envp)
 	if (ft_strequal(cmd->command, "echo"))
 		exec_ret = ft_echo(args);
 	else if (ft_strequal(cmd->command, "cd"))
-		g_last_res = execute_cd(*args);
+		exec_ret = execute_cd(*args);
 	else if (ft_strequal(cmd->command, "unset"))
-		g_last_res = ft_unset(args, &envp);
+		exec_ret = ft_unset(args, &envp);
 	else if (ft_strequal(cmd->command, "exit"))
-		g_last_res = ft_exit(args);
+		exec_ret = ft_exit(args);
 	else if (ft_strequal(cmd->command, "export"))
 		exec_ret = ft_export(args, &envp);
 	else if (ft_strequal(cmd->command, "env"))
