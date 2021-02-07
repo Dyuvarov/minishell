@@ -6,11 +6,11 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:32:37 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/07 15:23:32 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 15:47:16 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor/executor.h"
+#include "executor.h"
 
 int		call_func(t_cmd *cmd, char **envp)
 {
@@ -21,7 +21,7 @@ int		call_func(t_cmd *cmd, char **envp)
 	if (ft_strequal(cmd->command, "echo"))
 		exec_ret = ft_echo(args);
 	else if (ft_strequal(cmd->command, "cd"))
-		exec_ret = execute_cd(*args, envp);
+		exec_ret = execute_cd(*args);
 	else if (ft_strequal(cmd->command, "unset"))
 		exec_ret = ft_unset(args, &envp);
 	else if (ft_strequal(cmd->command, "exit"))
