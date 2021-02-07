@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 12:14:44 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/26 21:59:24 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 10:47:02 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void			ft_swap(int v[], int i, int j);
 void			ft_shellsort(int v[], int n);
 void			ft_desc_shellsort(int v[], int n);
 void			ft_qsort(int v[], int left, int right);
+char			*ft_strcpy(char *dst, char *src);
 char			*ft_strstr(const char *s1, const char *s2);
 char			**ft_ssplit(const char *s, const char *set);
 

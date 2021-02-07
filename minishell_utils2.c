@@ -6,20 +6,18 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 11:41:18 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/05 12:25:03 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 11:46:51 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*ft_strcpy(char *dst, char *src)
+int			prepare_cmd(t_cmd *cmd, char **env)
 {
-	char *r;
+	extern int	g_last_res;
 
-	r = dst;
-	while ((*dst++ = *src++))
-		;
-	return (r);
+	return (replace_dollar_question(cmd, g_last_res) \
+		|| !(cmd->args[0] = get_abs_path_command(cmd->command, env)));
 }
 
 char		*ft_strreplace(char *dst, const char *old, const char *new)
@@ -59,11 +57,14 @@ int			replace_dollar_question(t_cmd *cmd, int val)
 	if ((sval = ft_itoa(val)) == NULL)
 		return (1);
 	if (cmd->command)
-		cmd->command = replace_field(cmd->command, sval);
+		if (!(cmd->command = replace_field(cmd->command, sval)))
+			return (1);
 	if (cmd->file_in)
-		cmd->file_in = replace_field(cmd->file_in, sval);
+		if (!(cmd->file_in = replace_field(cmd->file_in, sval)))
+			return (1);
 	if (cmd->file_out)
-		cmd->file_out = replace_field(cmd->file_out, sval);
+		if (!(cmd->file_out = replace_field(cmd->file_out, sval)))
+			return (1);
 	i = 0;
 	while (cmd->args[i])
 	{
@@ -71,7 +72,7 @@ int			replace_dollar_question(t_cmd *cmd, int val)
 			return (1);
 		i++;
 	}
-	return (!cmd->command || !cmd->file_in || !cmd->file_out);
+	return (0);
 }
 
 char		**parse_path(char **envp)

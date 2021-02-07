@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:02:00 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/05 13:42:03 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 11:01:00 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ int				decrease_shlvl(char *shlvl_val, char ***env);
 int				increase_shlvl(char *shlvl_val, char ***env);
 int				merge_dpointer(void ***dst, void **p);
 char			*ft_strreplace(char *dst, const char *old, const char *new);
+int				prepare_cmd(t_cmd *cmd, char **env);
 int				replace_dollar_question(t_cmd *cmd, int val);
-int				is_true_cmd(t_cmd *cmd);
 int				ft_getch(void);
 void			ft_ungetch(void);
 int				skip_spaces(void);

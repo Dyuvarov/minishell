@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 12:25:47 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/06 18:34:32 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 10:59:56 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ int				main(int argc, char **argv, char **envp)
 	t_tools		*tools;
 	char		**envtmp;
 	int			i;
-	extern int	g_last_res;
 
 	prepare_to_work(&tools, &envtmp, envp, argv[argc]);
 	while (1)
@@ -89,7 +88,10 @@ int				main(int argc, char **argv, char **envp)
 			i = -1;
 			while (cmd[++i])
 			{
-				replace_dollar_question(cmd[i], g_last_res);
+				if (prepare_cmd(cmd[i], envtmp) \
+					&& handle_error(MALLOC_ERROR, "minishell"))
+					break;
+
 				executor(cmd[i], &envtmp, tools);
 			}
 		}

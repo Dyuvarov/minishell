@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 18:07:04 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/05 14:23:21 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 11:12:22 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 ** Returns: parsed NULL-terminated array_of_args or NULL (if ERROR or EOF)
 */
 
-static char		**parse_args(char *command, char **env)
+static char		**parse_args(char **env)
 {
 	int		i;
 	int		c;
@@ -31,7 +31,7 @@ static char		**parse_args(char *command, char **env)
 	i = 0;
 	if (!(args = (char **)malloc(sizeof(char *) * BUFFER_SIZE)))
 		return (NULL);
-	args[i] = get_abs_path_command(command, env);
+	args[i] = ft_strdup("");
 	while (args[i++] && !skip_spaces() \
 			&& (c = ft_getch()) > 0 \
 			&& !ft_strchr(SPEC_CHARS, c))
@@ -82,7 +82,7 @@ static int		parse_filename(t_cmd *cmd, int is_out, char **env)
 		file = &cmd->file_out;
 	err = c < 1 || skip_spaces();
 	err |= (*file = parse_seq(env)) == NULL;
-	t = (void **)parse_args(cmd->command, env);
+	t = (void **)parse_args(env);
 	err |= skip_pipe_n_semicolon();
 	err |= merge_dpointer((void ***)&cmd->args, t ? ++t : t);
 	return (err);
@@ -106,7 +106,7 @@ static t_cmd	*parse_cmd(char **env)
 		return (NULL);
 	err = 0;
 	if ((cmd->command = parse_seq(env)))
-		if ((cmd->args = parse_args(cmd->command, env)))
+		if ((cmd->args = parse_args(env)))
 			if ((c = ft_getch()) > 0)
 			{
 				if (c == '<' || c == '>')
