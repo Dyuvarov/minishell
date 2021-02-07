@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:32:37 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/07 10:34:37 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 14:23:40 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		call_func(t_cmd *cmd, char **envp)
 	if (ft_strequal(cmd->command, "echo"))
 		exec_ret = ft_echo(args);
 	else if (ft_strequal(cmd->command, "cd"))
-		exec_ret = execute_cd(*args);
+		exec_ret = execute_cd(*args, envp);
 	else if (ft_strequal(cmd->command, "unset"))
 		exec_ret = ft_unset(args, &envp);
 	else if (ft_strequal(cmd->command, "exit"))
@@ -127,7 +127,7 @@ void	executor(t_cmd *cmd, char ***envp, t_tools *tools)
 	signal(SIGQUIT, input_signal_handler);
 	args = cmd->args + 1;
 	if (!cmd->fl_pipe && ft_strequal(cmd->command, "cd"))
-		g_last_res = execute_cd(*args);
+		g_last_res = execute_cd(*args, *envp);
 	else if (!cmd->fl_pipe && ft_strequal(cmd->command, "unset"))
 		g_last_res = ft_unset(args, envp);
 	else if (!cmd->fl_pipe && ft_strequal(cmd->command, "export"))

@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:02:00 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/07 11:01:00 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 12:35:10 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,11 @@ void			delcmd(void *command);
 int				is_curdir(char *p);
 int				is_pardir(char *p);
 int				is_path(char *p);
-int				is_equal(char *s1, char *s2);
+char			*join_path(char *p1, char *p2, size_t p2_end);
 char			*get_cur_path(void);
 char			*get_env_var(char *name, char **env);
 char			*get_abs_path(char *dir, char *file_name);
+char			*get_abs_parent(char *dir);
 char			*get_abs_path_command(char *cmd, char **env);
 int				set_last_red_file(t_cmd **cmd);
 int				is_eof(void);

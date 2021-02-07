@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 17:42:53 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/05 12:51:30 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 12:30:31 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,14 @@ char		*get_abs_path(char *dir, char *file_name)
 	return (r);
 }
 
+char		*get_abs_parent(char *dir)
+{
+	char *tmp;
+	
+	tmp = ft_strrchr(dir, '/');
+	return (join_path("", dir, tmp - dir));
+}
+
 int			is_curdir(char *p)
 {
 	return ((p)[0] == '.' && (p)[1] == '/');
@@ -39,9 +47,4 @@ int			is_pardir(char *p)
 int			is_path(char *p)
 {
 	return (ft_strchr((p), '/') != NULL);
-}
-
-int			is_equal(char *s1, char *s2)
-{
-	return (ft_strncmp((s1), (s2), ft_strlen(s1)) == 0);
 }

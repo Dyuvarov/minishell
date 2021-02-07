@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugreyiro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 12:25:49 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/05 13:33:45 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 14:03:56 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ static void	show_error_message(const char *command, const char *message)
 	str_tmp = str;
 	str = ft_strjoin(str, message);
 	free(str_tmp);
-	ft_putstr_fd(str, 1);
-	ft_putstr_fd("\n", 1);
+	ft_putstr_fd(str, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
 	free(str);
 }
 

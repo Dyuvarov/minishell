@@ -6,19 +6,23 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 12:56:58 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/05 12:57:41 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 14:22:13 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-int		execute_cd(char *new_path)
+int		execute_cd(char *new_path, char **env)
 {
 	int		res;
+	char	*abs_path;
 
-	res = chdir(new_path);
+	if ((abs_path = get_abs_path_command(new_path, env)) == NULL)
+		return (1);
+	res = chdir(abs_path);
 	if (res < 0)
 		handle_cd_error(new_path);
+	free(abs_path);
 	return (res < 0 ? errno : 0);
 }
 

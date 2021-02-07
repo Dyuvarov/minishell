@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:25:17 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/05 12:49:24 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 13:19:16 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static char		*file_in_path(char *command, char **envpath)
 		{
 			errno = 0;
 			while ((entry = readdir(cur_dir)) != NULL \
-					&& !is_equal(entry->d_name, command))
+					&& !ft_strequal(entry->d_name, command))
 				;
 			closedir(cur_dir);
 			if (entry != NULL)
@@ -41,7 +41,7 @@ static char		*file_in_path(char *command, char **envpath)
 	return (NULL);
 }
 
-static char		*join_path(char *p1, char *p2, size_t p2_end)
+char			*join_path(char *p1, char *p2, size_t p2_end)
 {
 	char *newp;
 
@@ -65,8 +65,7 @@ static int		init_abs_path(char *cmd, char *cdir, char **abs_path)
 	}
 	else if (is_pardir(cmd))
 	{
-		tmp = ft_strrchr(cdir, '/');
-		*abs_path = join_path("", cdir, tmp - cdir);
+		*abs_path = get_abs_parent(cdir);
 		return (3);
 	}
 	else if (is_curdir(cmd))
@@ -127,8 +126,13 @@ char			*get_abs_path_command(char *cmd, char **env)
 	else
 	{
 		errno = 0;
-		if (!envpath || ((abs_path = file_in_path(cmd, envpath)) == NULL))
-			abs_path = get_abs_path(cdir, cmd);
+		//ft_putendl_fd("__________", 1);
+		//ft_putendl_fd(cmd, 1);
+		//ft_putendl_fd(cdir, 1);
+		if (!envpath || cmd[0]  == '.' || ft_strequal("..", cmd)  \
+			|| ((abs_path = file_in_path(cmd, envpath)) == NULL))
+			abs_path = ft_strequal("..", cmd) ? \
+				get_abs_parent(cdir) : get_abs_path(cdir, cmd);
 	}
 	free(cdir);
 	free(envpath);
