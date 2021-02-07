@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:32:37 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/07 17:06:00 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 17:27:38 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,11 +105,12 @@ void	execute_with_redirection(t_cmd *cmd, char **envp, int tmp_fd[])
 		dup2(cmd->fd[1], 1);
 		close(cmd->fd[1]);
 	}
-	else
+	if (cmd->file_out)
 	{
 		if ((cmd->fd[0] = open(cmd->file_out, O_RDONLY)) < 0)
 		{
 			handle_error(FD_ERROR, cmd->file_out);
+			dup2(tmp_fd[1], 1);
 			return ;
 		}
 		dup2(cmd->fd[0], 0);
