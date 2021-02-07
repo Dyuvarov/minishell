@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:31:37 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/07 15:53:47 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 16:29:20 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ typedef struct	s_tools
 
 int				g_last_res;
 
-int				free_dpointer_no_size(void **p);
 int				execute_cd(char *new_path);
 void			execute_in_current_process(t_cmd *cmd, \
 					char ***env, t_tools *tools);

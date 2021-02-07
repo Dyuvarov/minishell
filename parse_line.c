@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 18:07:04 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/07 11:12:22 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 16:20:51 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ t_cmd			**parse_cmd_line(char **env)
 			return (NULL);
 		res[i] = parse_cmd(env);
 	}
-	if (c < 1 || !res[i - 1])
+	if (!res[i - 1] || c < 1)
 		free_dpointer((void ***)&res, i != 0 && !res[i - 1] ? i - 1 : i);
 	else
 		res = (t_cmd **)normalize_arr(res, i, sizeof(*res));

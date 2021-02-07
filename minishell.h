@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:02:00 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/07 15:41:55 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 16:29:33 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int				ft_getch(void);
 void			ft_ungetch(void);
 int				skip_spaces(void);
 int				free_dpointer(void ***p, size_t nmemb);
+int				free_dpointer_no_size(void **p);
 char			**parse_path(char **envp);
 int				parse_escaped_seq(char **buf, int index, int esc_all);
 int				parse_dollar_seq(char **buf, int index, char **env);

@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:25:17 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/07 15:59:54 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 16:30:02 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,6 @@ char			*get_abs_path_command(char *cmd, char **env)
 			abs_path = get_abs_path(cdir, cmd);
 	}
 	free(cdir);
-	free(envpath);
+	free_dpointer_no_size((void **)envpath);
 	return (abs_path);
 }

@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 11:41:18 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/07 16:01:30 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 16:26:23 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int			replace_dollar_question(t_cmd *cmd, int val)
 			return (1);
 		i++;
 	}
+	free(sval);
 	return (0);
 }
 
