@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 12:25:47 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/07 15:59:54 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 18:16:40 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ static char		**clone_envp(char **envp)
 static void		prepare_to_work(t_tools **tools, char ***clone_env, \
 		char **envp, void *unused)
 {
+	char *shlvl;
+
 	if (!(*tools = malloc(sizeof(t_tools))))
 	{
 		handle_error(MALLOC_ERROR, "minishell");
@@ -54,7 +56,8 @@ static void		prepare_to_work(t_tools **tools, char ***clone_env, \
 		handle_error(MALLOC_ERROR, "minishell");
 		exit(ENOMEM);
 	}
-	increase_shlvl(get_env_var("SHLVL", *clone_env), clone_env);
+	shlvl = get_env_var("SHLVL", *clone_env);
+	increase_shlvl(shlvl, clone_env);
 	(void)unused;
 }
 
