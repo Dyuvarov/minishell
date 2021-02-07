@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:25:17 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/07 13:19:16 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 14:39:57 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,9 +126,6 @@ char			*get_abs_path_command(char *cmd, char **env)
 	else
 	{
 		errno = 0;
-		//ft_putendl_fd("__________", 1);
-		//ft_putendl_fd(cmd, 1);
-		//ft_putendl_fd(cdir, 1);
 		if (!envpath || cmd[0]  == '.' || ft_strequal("..", cmd)  \
 			|| ((abs_path = file_in_path(cmd, envpath)) == NULL))
 			abs_path = ft_strequal("..", cmd) ? \
