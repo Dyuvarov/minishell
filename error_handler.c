@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 12:25:49 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/07 14:03:56 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 17:39:54 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,18 @@ static void	show_error_message(const char *command, const char *message)
 
 int			handle_error(int code, const char *command)
 {
+	char 		*slash;
 	extern int g_last_res;
 
 	if (code == WRONG_COMMAND)
-		show_error_message(command, "command not found");
+	{
+		if (!(slash = ft_strrchr(command, '/')))
+			show_error_message(command, "command not found");
+		else if (*(slash + 1) != '\0')
+			show_error_message(command, "No such file or directory");
+		else
+			show_error_message(command, "is a directory");
+	}
 	else if (code == MANY_ARGS)
 		show_error_message(command, "too many arguments");
 	else if (code == MALLOC_ERROR)
