@@ -6,13 +6,13 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 22:17:01 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/03 19:35:21 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 15:41:17 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_correct_name(char *name, size_t len)
+int			is_correct_name(char *name, size_t len)
 {
 	if (len > 0 && (ft_isalpha(*name) || *name == '_'))
 	{
@@ -41,7 +41,6 @@ static int	change_evn_var(char *var, size_t name_size, char **env)
 		if ((size_t)(eqsign - *env) == name_size)
 			if (ft_strncmp(*env, var, name_size) == 0)
 			{
-				free(*env);
 				*env = ft_strdup(var);
 				return (1);
 			}
@@ -77,7 +76,7 @@ int			ft_export(char **vars, char ***env)
 		eqsign = ft_strchr(var, '=');
 		name_size = eqsign ? (size_t)(eqsign - var) : ft_strlen(var);
 		if (!is_correct_name(var, name_size))
-			return (error("export: not a valid identifier"));
+			return (error("minishell: export: not a valid identifier"));
 		if (eqsign && !change_evn_var(var, name_size, *env))
 		{
 			if ((*env = ft_realloc(*env, sizeof(char *) * size,

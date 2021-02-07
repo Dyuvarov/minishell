@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 13:38:46 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/29 22:18:00 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/05 12:04:14 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static char *g_bufp = 0;
 static int	g_n = 0;
+static int	g_last_c = '\n';
 
 /*
 ** Buffered read from stdin
@@ -28,13 +29,21 @@ int		ft_getch(void)
 	extern char *g_bufp;
 	extern int	g_n;
 
-	if (g_n <= 0)
+	if (g_n == 0)
+	{
+		g_n = read(0, buf, BUFFER_SIZE);
+		g_bufp = buf;
+	}
+	while (g_n == 0 && g_last_c != '\n')
 	{
 		g_n = read(0, buf, BUFFER_SIZE);
 		g_bufp = buf;
 	}
 	if (--g_n >= 0)
-		return ((unsigned char)*g_bufp++);
+	{
+		g_last_c = (unsigned char)*g_bufp++;
+		return (g_last_c);
+	}
 	else
 		return (g_n == -1 ? 0 : -1);
 }
@@ -50,4 +59,5 @@ void	ft_ungetch(void)
 
 	g_bufp--;
 	g_n++;
+	g_last_c = (unsigned char)*g_bufp;
 }

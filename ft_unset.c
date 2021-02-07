@@ -6,7 +6,7 @@
 /*   By: ugreyiro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 10:32:28 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/01/28 10:32:31 by ugreyiro         ###   ########.fr       */
+/*   Updated: 2021/02/05 14:08:02 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	restruct_envp(char ***envp, int n)
 {
-	char 	**env;
+	char	**env;
 
 	env = *envp;
 	while (env[n])
@@ -22,9 +22,9 @@ static int	restruct_envp(char ***envp, int n)
 		if (env[n + 1])
 		{
 			free(env[n]);
-			env[n] = ft_strdup(env[n+1]);
+			env[n] = ft_strdup(env[n + 1]);
 			if (!(env[n]))
-				return (0);
+				return (ENOMEM);
 			++n;
 		}
 		else
@@ -33,36 +33,38 @@ static int	restruct_envp(char ***envp, int n)
 			env[n] = NULL;
 		}
 	}
+	return (0);
+}
+
+static int	error(char *err_msg)
+{
+	ft_putendl_fd(err_msg, STDERR_FILENO);
 	return (1);
 }
 
-int ft_unset(char **vars, char ***envp)
+int			ft_unset(char **vars, char ***envp)
 {
 	int		i;
-	int 	j;
-	char 	*eqsign;
-	char 	**env;
+	int		j;
+	char	*eqsign;
+	char	**env;
+	size_t	name_sz;
 
-	i = 0;
+	i = -1;
 	env = *envp;
-	while (vars[i])
+	while (vars[++i])
 	{
-		j = 0;
-		while (env[j])
+		j = -1;
+		while (env[++j])
 		{
 			eqsign = ft_strchr(env[j], '=');
-			if (eqsign)
-			{
-				if ((ft_strncmp(vars[i], env[j], eqsign - env[j])) == 0)
-				{
-					if (!restruct_envp(envp, j))
-						return (0);
-					return (1);
-				}
-			}
-			++j;
+			name_sz = ft_strlen(vars[i]);
+			if (!is_correct_name(vars[i], name_sz))
+				return (error("minishell: unset: not a valid identifier"));
+			if (eqsign && name_sz == (size_t)(eqsign - env[j]) \
+					&& (ft_strncmp(env[j], vars[i], eqsign - env[j])) == 0)
+				return (restruct_envp(envp, j));
 		}
-		++i;
 	}
-	return (1);
+	return (0);
 }

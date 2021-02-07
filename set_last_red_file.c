@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 16:18:12 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/04 11:38:10 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 15:40:22 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,27 +61,35 @@ static void	set_new_direct(t_cmd *true_cmd, t_cmd *file_cmd)
 
 static int	set_file(t_cmd *true_cmd, t_cmd *file_cmd)
 {
+	int fd;
+
 	if ((!true_cmd->file_in && file_cmd->file_in) \
 			|| (!true_cmd->file_out && file_cmd->file_out))
-	{
 		set_new_direct(true_cmd, file_cmd);
-		return (1);
-	}
 	else
+	{
 		swap_files(true_cmd, file_cmd);
+		if (file_cmd->file_in)
+			fd = open(file_cmd->file_in, O_CREAT | O_WRONLY \
+					| (file_cmd->fl_append ? O_APPEND : O_TRUNC), 0666);
+		else
+			fd = open(file_cmd->file_out, O_RDONLY);
+		if (fd < 0)
+			return (-1);
+		return (close(fd));
+	}
 	return (0);
 }
 
 int			set_last_red_file(t_cmd **cmd)
 {
 	int		i;
+	int		err;
 	t_cmd	*true_cmd;
 
-	if (cmd == NULL)
-		return (-1);
-	i = 0;
+	i = -1;
 	true_cmd = NULL;
-	while (cmd[i])
+	while (cmd[++i])
 	{
 		if (cmd[i]->command[0] != '\0')
 			true_cmd = cmd[i];
@@ -90,12 +98,14 @@ int			set_last_red_file(t_cmd **cmd)
 			merge_dpointer((void ***)&true_cmd->args, \
 					(void **)cmd[i]->args + 1);
 			cmd[i]->args[1] = NULL;
-			if (set_file(true_cmd, cmd[i]))
-				del_elem(cmd, i--);
+			err = set_file(true_cmd, cmd[i]);
+			del_elem(cmd, i--);
+			if (err != 0)
+				return (handle_error(FD_ERROR, cmd[i]->file_in ? \
+						cmd[i]->file_in : cmd[i]->file_out));
 		}
 		else
-			return (-1);
-		i++;
+			return (handle_error(WRONG_COMMAND, cmd[i]->command));
 	}
 	return (0);
 }

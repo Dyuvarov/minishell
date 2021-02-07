@@ -6,14 +6,13 @@
 /*   By: ugreyiro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 12:27:00 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/02 19:50:37 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/05 12:35:54 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "executor.h"
 
-int	free_dpointer_no_size(void **p)
+int		free_dpointer_no_size(void **p)
 {
 	int i;
 
@@ -24,7 +23,7 @@ int	free_dpointer_no_size(void **p)
 	return (1);
 }
 
-void free_cmd(t_cmd **cmd)
+void	free_cmd(t_cmd **cmd)
 {
 	int i;
 	int j;

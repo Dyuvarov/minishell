@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:21:11 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/02 19:48:49 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 14:50:14 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*get_cur_path(void)
 	size = BUFFER_SIZE;
 	if ((path = (char *)malloc(sizeof(char) * size)) == NULL)
 		return (NULL);
-	while (getcwd(path, size) == NULL && errno == ERANGE)
+	while ((path = getcwd(path, size)) == NULL && errno == ERANGE)
 	{
 		errno = 0;
 		size *= 2;

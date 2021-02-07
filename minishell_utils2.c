@@ -6,22 +6,18 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 11:41:18 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/04 14:37:08 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 15:41:05 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-#define LRS "$?"
-
-static char	*ft_strcpy(char *dst, char *src)
+int			prepare_cmd(t_cmd *cmd, char **env)
 {
-	char *r;
+	extern int	g_last_res;
 
-	r = dst;
-	while ((*dst++ = *src++))
-		;
-	return (r);
+	return (replace_dollar_question(cmd, g_last_res) \
+		|| !(cmd->args[0] = get_abs_path_command(cmd->command, env)));
 }
 
 char		*ft_strreplace(char *dst, const char *old, const char *new)
@@ -42,47 +38,57 @@ char		*ft_strreplace(char *dst, const char *old, const char *new)
 	return (res);
 }
 
+static char	*replace_field(char *field, char *replace_val)
+{
+	char *tmp;
+	char *res;
+
+	tmp = field;
+	res = ft_strreplace(field, REPLACE_M, replace_val);
+	free(tmp);
+	return (res);
+}
+
 int			replace_dollar_question(t_cmd *cmd, int val)
 {
 	int		i;
-	char	*tmp;
 	char	*sval;
 
 	if ((sval = ft_itoa(val)) == NULL)
 		return (1);
-	tmp = cmd->command;
-	cmd->command = ft_strreplace(cmd->command, LRS, sval);
-	free(tmp);
-	tmp = cmd->file_in;
-	cmd->file_in = ft_strreplace(cmd->file_in, LRS, sval);
-	free(tmp);
-	tmp = cmd->file_out;
-	cmd->file_out = ft_strreplace(cmd->file_out, LRS, sval);
-	free(tmp);
+	if (cmd->command)
+		if (!(cmd->command = replace_field(cmd->command, sval)))
+			return (1);
+	if (cmd->file_in)
+		if (!(cmd->file_in = replace_field(cmd->file_in, sval)))
+			return (1);
+	if (cmd->file_out)
+		if (!(cmd->file_out = replace_field(cmd->file_out, sval)))
+			return (1);
 	i = 0;
 	while (cmd->args[i])
 	{
-		tmp = cmd->args[i];
-		if ((cmd->args[i] = ft_strreplace(cmd->args[i], LRS, sval)) == NULL)
+		if ((cmd->args[i] = replace_field(cmd->args[i], sval)) == NULL)
 			return (1);
-		free(tmp);
 		i++;
 	}
-	return (!cmd->command || !cmd->file_in || !cmd->file_out);
+	return (0);
 }
 
-/*
-** Returns:
-**			if is command: 1, if is file: 0 else: -1
-*/
-
-int			is_true_cmd(t_cmd *cmd)
+char		**parse_path(char **envp)
 {
-	if (cmd && cmd->command[0] != 0 && cmd->args[0][0] != 0)
-		return (1);
-	else if (cmd && cmd->command[0] != 0 && cmd->args[0][0] == 0 \
-			&& (cmd->file_in || cmd->file_out))
-		return (0);
-	else
-		return (-1);
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+		{
+			tmp = envp[i] + 5;
+			return (ft_split(tmp, ':'));
+		}
+		++i;
+	}
+	return (NULL);
 }

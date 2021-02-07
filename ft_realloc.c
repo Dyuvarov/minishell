@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 12:58:53 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/30 18:00:11 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/05 12:34:13 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void	*safe_realloc(void *buf, size_t index, size_t memsz)
 ** NULL-terminates final arr
 **
 ** Ideally, need to make a reallocation to free up extra memory:
-** 		res = realloc(arr, GET_OLD_SIZE(size) * membsz, membsz * (size + 1));
-** 
+** 		res = realloc(arr, get_old_size(size) * membsz, membsz * (size + 1));
+**
 ** Returns: reallocated NULL-terminated array
 */
 

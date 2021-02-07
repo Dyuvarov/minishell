@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_eof.c                                           :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/30 13:40:41 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/01/30 13:50:37 by fmoaney          ###   ########.fr       */
+/*   Created: 2021/02/07 10:46:29 by fmoaney           #+#    #+#             */
+/*   Updated: 2021/02/07 10:46:32 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#define EXIT() (ft_exit(0))
+#include "libft.h"
 
-int	is_eof(void)
+char	*ft_strcpy(char *dst, char *src)
 {
-	if (ft_getch() == 0)
-		return (1);
-	else
-	{
-		ft_ungetch();
-		return (0);
-	}
+	char *r;
+
+	r = dst;
+	while ((*dst++ = *src++))
+		;
+	return (r);
 }
