@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 11:41:18 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/07 15:55:24 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/07 16:01:30 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,14 @@
 
 int			prepare_cmd(t_cmd *cmd, char **env)
 {
+	int			err;
 	extern int	g_last_res;
 
-	return (replace_dollar_question(cmd, g_last_res) \
-		|| !(cmd->args[0] = get_abs_path_command(cmd->command, env)));
+	err = replace_dollar_question(cmd, g_last_res) \
+		|| !(cmd->args[0] = get_abs_path_command(cmd->command, env));
+	if (err)
+		handle_error(MALLOC_ERROR, cmd->command);
+	return (err);
 }
 
 char		*ft_strreplace(char *dst, const char *old, const char *new)
