@@ -6,38 +6,12 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 12:25:47 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/07 18:16:40 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/08 16:14:06 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "executor.h"
-
-static char		**clone_envp(char **envp)
-{
-	char	**envtmp;
-	int		i;
-	int		len;
-
-	i = 0;
-	while (envp[i])
-		++i;
-	len = i;
-	if (!(envtmp = (char **)malloc(sizeof(char *) * len)))
-		return (NULL);
-	i = 0;
-	while (envp[i])
-	{
-		if (!(envtmp[i] = ft_strdup(envp[i])))
-		{
-			free_dpointer_no_size((void **)envtmp);
-			return (NULL);
-		}
-		++i;
-	}
-	envtmp[i] = NULL;
-	return (envtmp);
-}
 
 static void		prepare_to_work(t_tools **tools, char ***clone_env, \
 		char **envp, void *unused)

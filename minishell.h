@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:02:00 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/08 15:04:45 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/08 17:17:57 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ int				is_correct_name(char *name, size_t len);
 int				decrease_shlvl(char *shlvl_val, char ***env);
 int				increase_shlvl(char *shlvl_val, char ***env);
 int				merge_dpointer(void ***dst, void **p);
+char			**clone_envp(char **envp);
+void			bubblesort(char **strs);
 char			*ft_strreplace(char *dst, const char *old, const char *new);
 int				prepare_cmd(t_cmd *cmd, char **env);
 int				replace_dollar_question(t_cmd *cmd, int val);

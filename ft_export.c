@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 22:17:01 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/07 18:20:08 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/08 17:16:16 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,16 @@ static int	change_evn_var(char *var, size_t name_size, char **env)
 
 static int	print_env(char **env)
 {
-	while (*env)
+	char **clone;
+
+	if ((clone = clone_envp(env)) == NULL)
+		return (ENOMEM);
+	bubblesort(clone);
+	while (*clone)
 	{
 		if (ft_puts("declare -x ") == -1)
 			return (errno);
-		if (ft_putendl_fd(*env++, 1) == -1)
+		if (ft_putendl_fd(*clone++, 1) == -1)
 			return (errno);
 	}
 	return (0);
