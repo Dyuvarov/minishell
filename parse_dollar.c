@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:05:49 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/08 15:37:25 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/08 17:30:42 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ char	*parse_dollar(char **env)
 	char	*res;
 
 	i = 0;
+	res = "$";
 	if ((name = (char *)malloc(BUFFER_SIZE)) == NULL)
 		return (NULL);
 	if ((c = ft_getch()) > 0 && (ft_isalpha(c) || c == '_'))
@@ -50,8 +51,7 @@ char	*parse_dollar(char **env)
 	}
 	free(name);
 	if (i == 0 && c == '?')
-		res = REPLACE_M;
-	else
-		ft_ungetch();
+		return (REPLACE_M);
+	ft_ungetch();
 	return (res);
 }
