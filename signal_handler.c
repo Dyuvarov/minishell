@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:36:33 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/07 15:37:36 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/08 13:41:33 by ugreyiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,15 @@
 
 void	input_signal_handler(int sig)
 {
-	write(1, "\b\b  \b\b", 5);
 	if (sig == SIGINT)
+	{
 		write(1, "\n", 1);
+	}
 	else if (sig == SIGQUIT)
+	{
 		write(1, "Quit: 3\n", 8);
+	}
+		
 }
 
 void	signal_handler(int sig)

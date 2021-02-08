@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:32:37 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/07 17:27:38 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/08 13:49:35 by ugreyiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,11 @@ int		call_func(t_cmd *cmd, char **envp)
 	else if (ft_strequal(cmd->command, "pwd"))
 		exec_ret = ft_pwd();
 	else
-		exec_ret = execve(cmd->args[0], cmd->args, envp);
+		if ((exec_ret = execve(cmd->args[0], cmd->args, envp)) < 0)
+		{
+			exec_ret = 127;
+			handle_error(WRONG_COMMAND, cmd->command);
+		}
 	return (exec_ret);
 }
 
@@ -41,14 +45,13 @@ void	execute_no_redirection(t_cmd *command, char **envp, int tmp_fd[])
 {
 	int			exec_ret;
 	int			pid;
+	int			status;
 	extern int	g_last_res;
 
 	pid = fork();
 	if (pid == 0)
 	{
 		exec_ret = call_func(command, envp);
-		if (exec_ret < 0)
-			handle_error(WRONG_COMMAND, command->command);
 		exit(exec_ret);
 	}
 	else if (pid < 0)
@@ -57,8 +60,11 @@ void	execute_no_redirection(t_cmd *command, char **envp, int tmp_fd[])
 	{
 		dup2(tmp_fd[0], 0);
 		dup2(tmp_fd[1], 1);
-		wait(&pid);
-		g_last_res = WEXITSTATUS(pid);
+		waitpid(pid, &status, WUNTRACED);
+		if (WTERMSIG(status))
+			g_last_res = 130;
+		else
+			g_last_res = WEXITSTATUS(status);
 	}
 }
 
@@ -66,6 +72,7 @@ void	execute_with_pipe(t_cmd *command, char **envp)
 {
 	int			exec_ret;
 	int			pid;
+	int			status;
 	extern int	g_last_res;
 
 	pid = fork();
@@ -75,8 +82,6 @@ void	execute_with_pipe(t_cmd *command, char **envp)
 		close(command->fd[0]);
 		exec_ret = call_func(command, envp);
 		close(command->fd[1]);
-		if (exec_ret < 0)
-			handle_error(WRONG_COMMAND, command->command);
 		exit(exec_ret);
 	}
 	else if (pid < 0)
@@ -85,9 +90,12 @@ void	execute_with_pipe(t_cmd *command, char **envp)
 	{
 		dup2(command->fd[0], 0);
 		close(command->fd[1]);
-		wait(&pid);
+		waitpid(pid, &status, WUNTRACED);
 		close(command->fd[0]);
-		g_last_res = WEXITSTATUS(pid);
+		if (WTERMSIG(status))
+			g_last_res = 130;
+		else
+			g_last_res = WEXITSTATUS(status);
 	}
 }
 
