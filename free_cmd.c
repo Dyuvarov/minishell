@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugreyiro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 12:27:00 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/05 12:35:54 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/08 17:51:30 by ugreyiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int		free_dpointer_no_size(void **p)
 	int i;
 
 	i = 0;
-	while (p[i])
+	while (p && p[i])
 		free(p[i++]);
 	free(p);
 	return (1);

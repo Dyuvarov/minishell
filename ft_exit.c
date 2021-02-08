@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:35:33 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/07 15:37:55 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/08 18:44:21 by ugreyiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ int	ft_exit(char **args)
 {
 	int exit_code;
 
-	write(1, "exit\n", 5);
+	if (!g_prepipe)
+		write(1, "exit\n", 5);
 	if (args[0] && args[1])
 	{
 		handle_error(MANY_ARGS, "exit");

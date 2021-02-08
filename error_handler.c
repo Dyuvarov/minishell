@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 12:25:49 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/07 17:39:54 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/08 18:13:05 by ugreyiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int			handle_error(int code, const char *command)
 		show_error_message(command, strerror(errno));
 	else if (code == FD_ERROR)
 		show_error_message(command, strerror(errno));
-	g_last_res = errno;
+	g_last_res = 1;
 	return (-1);
 }
 
