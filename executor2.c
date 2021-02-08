@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 12:56:58 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/07 15:56:28 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/08 16:55:30 by ugreyiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		execute_cd(char *new_path)
 	res = chdir(new_path);
 	if (res < 0)
 		handle_cd_error(new_path);
-	return (res < 0 ? errno : 0);
+	return (res < 0 ? 1 : 0);
 }
 
 void	execute_in_current_process(t_cmd *cmd, char ***env, t_tools *tools)
