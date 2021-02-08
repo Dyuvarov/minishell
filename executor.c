@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:32:37 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/08 19:25:57 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/08 19:41:34 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void	executor(t_cmd *cmd, char ***envp, t_tools *tools)
 	signal(SIGINT, input_signal_handler);
 	signal(SIGQUIT, input_signal_handler);
 	args = cmd->args + 1;
-	if (cmd->fl_pipe)
+	if (cmd->fl_pipe)	
 		g_prepipe = 1;
 	if ((ft_strequal(cmd->command, "cd")	\
 	|| ft_strequal(cmd->command, "exit")	\

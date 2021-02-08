@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 16:18:12 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/08 18:47:38 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/08 19:40:58 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ static void	set_new_direct(t_cmd *true_cmd, t_cmd *file_cmd)
 	}
 	else
 		true_cmd->file_out = ft_strdup(file_cmd->file_out);
+	true_cmd->fl_pipe = true_cmd->fl_pipe || file_cmd->fl_pipe;
 }
 
 static int	set_file(t_cmd *true_cmd, t_cmd *file_cmd)
