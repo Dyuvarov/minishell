@@ -6,7 +6,7 @@
 /*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:36:33 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/08 13:41:33 by ugreyiro         ###   ########.fr       */
+/*   Updated: 2021/02/08 17:09:00 by ugreyiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	input_signal_handler(int sig)
 
 void	signal_handler(int sig)
 {
-	write(1, "\b\b  \b\b", 5);
+	write(1, "\b\b  \b\b", 6);
 	if (sig == SIGINT)
 	{
 		write(1, "\n", 1);
