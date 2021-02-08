@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 18:07:04 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/08 19:07:12 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/08 19:25:05 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ static t_cmd	*parse_cmd(char **env)
 					err = parse_filename(cmd, c == '>', env);
 				else if (c == '\n')
 					ft_ungetch();
-				cmd->fl_pipe = c == '|';
+				cmd->fl_pipe = cmd->fl_pipe || c == '|';
 			}
 	if (!cmd->command || !cmd->args || c < 1 || err)
 	{
