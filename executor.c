@@ -6,11 +6,12 @@
 /*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:32:37 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/08 18:42:59 by ugreyiro         ###   ########.fr       */
+/*   Updated: 2021/02/08 18:57:59 by ugreyiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
+
 
 int		call_func(t_cmd *cmd, char **envp)
 {
@@ -135,24 +136,22 @@ void	executor(t_cmd *cmd, char ***envp, t_tools *tools)
 	signal(SIGINT, input_signal_handler);
 	signal(SIGQUIT, input_signal_handler);
 	args = cmd->args + 1;
-	if (cmd->fl_pipe)
+	
+	if ((ft_strequal(cmd->command, "cd")	\
+	|| ft_strequal(cmd->command, "exit")	\
+	|| ft_strequal(cmd->command, "export")	\
+	|| ft_strequal(cmd->command, "unset")) && !g_prepipe && !(cmd->fl_pipe))
+		execute_in_current_process(cmd, envp, tools);
+	else if (cmd->file_in || cmd->file_out)
+		execute_with_redirection(cmd, *envp, tools->tmp_fd);
+	else if (cmd->fl_pipe)
 	{
 		pipe(cmd->fd);
 		execute_with_pipe(cmd, *envp);
 		g_prepipe = 1;
-	}
+	}	
 	else
-	{
-		if ((ft_strequal(cmd->command, "cd")	\
-		|| ft_strequal(cmd->command, "exit")	\
-		|| ft_strequal(cmd->command, "export")	\
-		|| ft_strequal(cmd->command, "unset")) && !g_prepipe)
-			execute_in_current_process(cmd, envp, tools);
-		else if (cmd->file_in || cmd->file_out)
-			execute_with_redirection(cmd, *envp, tools->tmp_fd);
-		else
-			execute_no_redirection(cmd, *envp, tools->tmp_fd);
+		execute_no_redirection(cmd, *envp, tools->tmp_fd);
+	if (!(cmd->fl_pipe))	
 		g_prepipe = 0 ;
-	} 
-	
 }
