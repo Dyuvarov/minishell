@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:32:37 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/08 13:49:35 by ugreyiro         ###   ########.fr       */
+/*   Updated: 2021/02/08 14:56:20 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		call_func(t_cmd *cmd, char **envp)
 	else if (ft_strequal(cmd->command, "export"))
 		exec_ret = ft_export(args, &envp);
 	else if (ft_strequal(cmd->command, "env"))
-		exec_ret = ft_env(envp);
+		exec_ret = ft_env(args, envp);
 	else if (ft_strequal(cmd->command, "pwd"))
 		exec_ret = ft_pwd();
 	else

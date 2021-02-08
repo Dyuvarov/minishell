@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:02:00 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/07 16:29:33 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/08 15:04:45 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <dirent.h>
+# include <string.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <sys/wait.h>
@@ -53,7 +54,7 @@ typedef struct	s_cmd
 ** MAIN built-in functions:
 */
 
-int				ft_env(char **env);
+int				ft_env(char **args, char **env);
 int				ft_pwd(void);
 int				ft_cd(char *path);
 int				ft_echo(char **args);
