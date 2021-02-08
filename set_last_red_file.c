@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 16:18:12 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/08 15:27:07 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/08 18:47:38 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static void	swap_files(t_cmd *c1, t_cmd *c2)
 		c1->file_out = c2->file_out;
 		c2->file_out = t.file_out;
 	}
+	c1->fl_pipe = c2->fl_pipe;
 }
 
 static void	del_elem(t_cmd **cmd, int index)

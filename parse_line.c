@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 18:07:04 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/07 18:54:44 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/08 19:07:12 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,9 @@ static int		skip_pipe_n_semicolon(void)
 	err = skip_spaces();
 	if ((c = ft_getch()) > 0 && c != '|' && c != ';')
 		ft_ungetch();
-	return (err || c < 1);
+	if (err || c < 1)
+		return (-1);
+	return (c == '|');
 }
 
 static int		parse_filename(t_cmd *cmd, int is_out, char **env)
@@ -83,7 +85,8 @@ static int		parse_filename(t_cmd *cmd, int is_out, char **env)
 	err = c < 1 || skip_spaces();
 	err |= (*file = parse_seq(env)) == NULL;
 	t = (void **)parse_args(env);
-	err |= skip_pipe_n_semicolon();
+	cmd->fl_pipe = skip_pipe_n_semicolon();
+	err |= (cmd->fl_pipe == -1);
 	err |= merge_dpointer((void ***)&cmd->args, t ? t + 1 : t);
 	if (t)
 		free(*t);

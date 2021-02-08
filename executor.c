@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:32:37 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/08 18:57:59 by ugreyiro         ###   ########.fr       */
+/*   Updated: 2021/02/08 19:05:52 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,6 @@ void	executor(t_cmd *cmd, char ***envp, t_tools *tools)
 	signal(SIGINT, input_signal_handler);
 	signal(SIGQUIT, input_signal_handler);
 	args = cmd->args + 1;
-	
 	if ((ft_strequal(cmd->command, "cd")	\
 	|| ft_strequal(cmd->command, "exit")	\
 	|| ft_strequal(cmd->command, "export")	\
