@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 21:00:57 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/08 15:37:40 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/10 21:24:42 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int				parse_dollar_seq(char **buf, int index, char **env)
 		if ((*buf = safe_realloc(*buf, index + i, sizeof(**buf))) == NULL)
 			return (-1);
 	}
+	free(dollar);
 	return (i);
 }
 

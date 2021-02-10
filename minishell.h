@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:02:00 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/08 17:17:57 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/10 21:18:48 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 
 # define SPEC_CHARS "\n><|;"
 # define REPLACE_M "\a"
+# define ENV_MARK "\f\f"
 
 typedef struct	s_cmd
 {
@@ -95,7 +96,9 @@ char			**clone_envp(char **envp);
 void			bubblesort(char **strs);
 char			*ft_strreplace(char *dst, const char *old, const char *new);
 int				prepare_cmd(t_cmd *cmd, char **env);
-int				replace_dollar_question(t_cmd *cmd, int val);
+void			**ft_join_dpoiner(void **dp1, void **dp2);
+int				repair_command(t_cmd *cmd);
+char			*replace_new_env(char *field, char **env);
 int				ft_getch(void);
 void			ft_ungetch(void);
 int				skip_spaces(void);

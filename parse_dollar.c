@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:05:49 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/10 16:39:38 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/10 21:26:06 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,24 @@
 static char	*get_special_val(int c)
 {
 	if (c == '?')
-		return (REPLACE_M);
+		return (ft_strdup(REPLACE_M));
 	else if (!ft_isalnum(c) && c != '_')
-		return ("$");
+		return (ft_strdup("$"));
 	else
 		return (NULL);
+}
+
+static char	*save_as_env_var(char *name, char **env)
+{
+	char *tmp;
+	char *res;
+
+	(void)env;
+	if ((tmp = ft_strjoin(ENV_MARK, name)) == NULL)
+		return (NULL);
+	res = ft_strjoin(tmp, ENV_MARK);
+	free(tmp);
+	return (res);
 }
 
 /*
@@ -56,7 +69,7 @@ char		*parse_dollar(char **env)
 			name[i++] = c;
 		}
 		name[i] = '\0';
-		res = get_env_var(name, env);
+		res = save_as_env_var(name, env);
 	}
 	else
 		res = get_special_val(c);

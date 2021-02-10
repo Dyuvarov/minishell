@@ -6,11 +6,52 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 11:41:18 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/08 14:43:25 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/10 21:19:04 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*replace_field(char *field, char *replace_val, char **env)
+{
+	char *tmp;
+	char *res;
+
+	tmp = field;
+	res = ft_strreplace(field, REPLACE_M, replace_val);
+	free(tmp);
+	tmp = replace_new_env(res, env);
+	free(res);
+	res = tmp;
+	return (res);
+}
+
+static int	replace_dollar(t_cmd *cmd, int val, char **env)
+{
+	int		i;
+	char	*sval;
+
+	if ((sval = ft_itoa(val)) == NULL)
+		return (1);
+	if (cmd->command)
+		if (!(cmd->command = replace_field(cmd->command, sval, env)))
+			return (1);
+	if (cmd->file_in)
+		if (!(cmd->file_in = replace_field(cmd->file_in, sval, env)))
+			return (1);
+	if (cmd->file_out)
+		if (!(cmd->file_out = replace_field(cmd->file_out, sval, env)))
+			return (1);
+	i = 0;
+	while (cmd->args[i])
+	{
+		if ((cmd->args[i] = replace_field(cmd->args[i], sval, env)) == NULL)
+			return (1);
+		i++;
+	}
+	free(sval);
+	return (0);
+}
 
 int			prepare_cmd(t_cmd *cmd, char **env)
 {
@@ -18,15 +59,14 @@ int			prepare_cmd(t_cmd *cmd, char **env)
 	char		*tmp;
 	extern int	g_last_res;
 
-	tmp = NULL;
-	err = replace_dollar_question(cmd, g_last_res) \
-		|| !(tmp = get_abs_path_command(cmd->command, env));
-	if (tmp)
+	err = replace_dollar(cmd, g_last_res, env);
+	err |= repair_command(cmd);
+	if ((tmp = get_abs_path_command(cmd->command, env)))
 	{
 		free(cmd->args[0]);
 		cmd->args[0] = tmp;
 	}
-	if (err)
+	if (!tmp || err)
 		handle_error(MALLOC_ERROR, cmd->command);
 	return (err);
 }
@@ -47,44 +87,6 @@ char		*ft_strreplace(char *dst, const char *old, const char *new)
 	ft_strcpy(res + i, (char *)new);
 	ft_strcpy(res + i + new_sz, dst + i + old_sz);
 	return (res);
-}
-
-static char	*replace_field(char *field, char *replace_val)
-{
-	char *tmp;
-	char *res;
-
-	tmp = field;
-	res = ft_strreplace(field, REPLACE_M, replace_val);
-	free(tmp);
-	return (res);
-}
-
-int			replace_dollar_question(t_cmd *cmd, int val)
-{
-	int		i;
-	char	*sval;
-
-	if ((sval = ft_itoa(val)) == NULL)
-		return (1);
-	if (cmd->command)
-		if (!(cmd->command = replace_field(cmd->command, sval)))
-			return (1);
-	if (cmd->file_in)
-		if (!(cmd->file_in = replace_field(cmd->file_in, sval)))
-			return (1);
-	if (cmd->file_out)
-		if (!(cmd->file_out = replace_field(cmd->file_out, sval)))
-			return (1);
-	i = 0;
-	while (cmd->args[i])
-	{
-		if ((cmd->args[i] = replace_field(cmd->args[i], sval)) == NULL)
-			return (1);
-		i++;
-	}
-	free(sval);
-	return (0);
 }
 
 char		**parse_path(char **envp)
