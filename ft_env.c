@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:10:09 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/08 15:06:00 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/10 19:19:38 by ugreyiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,17 @@ static int	print_env_error(char *file)
 
 int			ft_env(char **args, char **env)
 {
+	char	*eqsign;
+
 	if (env == NULL)
 		return (-1);
 	if (args[0] != NULL)
 		return (print_env_error(args[0]));
 	while (*env)
-		if (ft_putendl_fd(*env++, 1) == -1)
-			return (errno);
+	{
+		if ((eqsign = ft_strchr(*env, '=')))
+			if (ft_putendl_fd(*env++, 1) == -1)
+				return (errno);
+	}
 	return (0);
 }
