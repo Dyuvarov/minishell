@@ -6,7 +6,7 @@
 /*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:36:33 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/08 17:09:00 by ugreyiro         ###   ########.fr       */
+/*   Updated: 2021/02/10 15:36:42 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	input_signal_handler(int sig)
 	{
 		write(1, "Quit: 3\n", 8);
 	}
-		
 }
 
 void	signal_handler(int sig)

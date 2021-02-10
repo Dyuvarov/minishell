@@ -6,7 +6,7 @@
 /*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:31:37 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/08 18:43:52 by ugreyiro         ###   ########.fr       */
+/*   Updated: 2021/02/10 17:10:40 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ int				g_last_res;
 int				g_prepipe;
 
 int				execute_cd(char *new_path);
-void			execute_in_current_process(t_cmd *cmd, \
-					char ***env, t_tools *tools);
-void			handle_cd_error(char *path);
-void			executor(t_cmd *cmd, char ***envp, t_tools *tools);
+int				open_redirect(t_cmd *cmd, int direct);
+void			open_empty_pipe(int tmp_fd[]);
+int				handle_redirect(t_cmd *cmd, int tmp_fd[]);
+void			execute_in_current_process(t_cmd *cmd, char ***env);
 void			handle_cd_error(char *path);
 void			executor(t_cmd *cmd, char ***envp, t_tools *tools);
 void			signal_handler(int sig);

@@ -6,13 +6,13 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 16:06:26 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/08 17:17:49 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/10 15:39:41 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	swap(char *v[], int i, int j)
+static void		swap(char *v[], int i, int j)
 {
 	char *temp;
 
@@ -47,7 +47,7 @@ char			**clone_envp(char **envp)
 	return (envtmp);
 }
 
-void		bubblesort(char **strs)
+void			bubblesort(char **strs)
 {
 	size_t i;
 	size_t j;

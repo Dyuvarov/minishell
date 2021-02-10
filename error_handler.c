@@ -6,7 +6,7 @@
 /*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 12:25:49 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/08 18:13:05 by ugreyiro         ###   ########.fr       */
+/*   Updated: 2021/02/10 15:40:30 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ static void	show_error_message(const char *command, const char *message)
 
 int			handle_error(int code, const char *command)
 {
-	char 		*slash;
-	extern int g_last_res;
+	char		*slash;
+	extern int	g_last_res;
 
 	if (code == WRONG_COMMAND)
 	{

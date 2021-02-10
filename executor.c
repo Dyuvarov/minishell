@@ -6,14 +6,13 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:32:37 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/08 19:41:34 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/10 17:19:07 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-
-int		call_func(t_cmd *cmd, char **envp)
+static int	call_func(t_cmd *cmd, char **envp)
 {
 	char	**args;
 	int		exec_ret;
@@ -33,16 +32,15 @@ int		call_func(t_cmd *cmd, char **envp)
 		exec_ret = ft_env(args, envp);
 	else if (ft_strequal(cmd->command, "pwd"))
 		exec_ret = ft_pwd();
-	else
-		if ((exec_ret = execve(cmd->args[0], cmd->args, envp)) < 0)
-		{
-			exec_ret = 127;
-			handle_error(WRONG_COMMAND, cmd->command);
-		}
+	else if ((exec_ret = execve(cmd->args[0], cmd->args, envp)) < 0)
+	{
+		exec_ret = 127;
+		handle_error(WRONG_COMMAND, cmd->command);
+	}
 	return (exec_ret);
 }
 
-void	execute_no_redirection(t_cmd *command, char **envp, int tmp_fd[])
+static void	execute(t_cmd *command, char **envp)
 {
 	int			exec_ret;
 	int			pid;
@@ -59,8 +57,6 @@ void	execute_no_redirection(t_cmd *command, char **envp, int tmp_fd[])
 		exit(1);
 	else
 	{
-		dup2(tmp_fd[0], 0);
-		dup2(tmp_fd[1], 1);
 		waitpid(pid, &status, WUNTRACED);
 		if (WTERMSIG(status))
 			g_last_res = 130;
@@ -69,89 +65,59 @@ void	execute_no_redirection(t_cmd *command, char **envp, int tmp_fd[])
 	}
 }
 
-void	execute_with_pipe(t_cmd *command, char **envp)
+static void	execute_with_pipe(t_cmd *cmd, char **envp)
 {
 	int			exec_ret;
 	int			pid;
 	int			status;
 	extern int	g_last_res;
 
-	pid = fork();
-	if (pid == 0)
+	pipe(cmd->fd);
+	if ((pid = fork()) == 0)
 	{
-		dup2(command->fd[1], 1);
-		close(command->fd[0]);
-		exec_ret = call_func(command, envp);
-		close(command->fd[1]);
-		exit(exec_ret);
-	}
-	else if (pid < 0)
-		exit(1);
-	else
-	{
-		dup2(command->fd[0], 0);
-		close(command->fd[1]);
-		waitpid(pid, &status, WUNTRACED);
-		close(command->fd[0]);
-		if (WTERMSIG(status))
-			g_last_res = 130;
-		else
-			g_last_res = WEXITSTATUS(status);
-	}
-}
-
-void	execute_with_redirection(t_cmd *cmd, char **envp, int tmp_fd[])
-{
-	if (cmd->file_in)
-	{
-		cmd->fd[1] = open(cmd->file_in, O_CREAT | O_RDWR \
-				| (cmd->fl_append ? O_APPEND : O_TRUNC), 0666);
-		if (cmd->fd[1] < 0)
-		{
-			handle_error(FD_ERROR, cmd->file_in);
-			return ;
-		}
-		dup2(cmd->fd[1], 1);
-		close(cmd->fd[1]);
-	}
-	if (cmd->file_out)
-	{
-		if ((cmd->fd[0] = open(cmd->file_out, O_RDONLY)) < 0)
-		{
-			handle_error(FD_ERROR, cmd->file_out);
-			dup2(tmp_fd[1], 1);
-			return ;
-		}
-		dup2(cmd->fd[0], 0);
+		if (!cmd->file_in)
+			dup2(cmd->fd[1], 1);
 		close(cmd->fd[0]);
+		exec_ret = call_func(cmd, envp);
+		close(cmd->fd[1]);
+		exit(exec_ret);
 	}
-	execute_no_redirection(cmd, envp, tmp_fd);
+	else if (pid < 0)
+		exit(1);
+	else
+	{
+		dup2(cmd->fd[0], 0);
+		close(cmd->fd[1]);
+		waitpid(pid, &status, WUNTRACED);
+		close(cmd->fd[0]);
+		g_last_res = WTERMSIG(status) ? 130 : WEXITSTATUS(status);
+	}
 }
 
-void	executor(t_cmd *cmd, char ***envp, t_tools *tools)
+void		executor(t_cmd *cmd, char ***envp, t_tools *tools)
 {
-	char		**args;
 	extern int	g_last_res;
 
 	signal(SIGINT, input_signal_handler);
 	signal(SIGQUIT, input_signal_handler);
-	args = cmd->args + 1;
-	if (cmd->fl_pipe)	
-		g_prepipe = 1;
+	g_prepipe = g_prepipe || cmd->fl_pipe;
+	if (handle_redirect(cmd, tools->tmp_fd))
+	{
+		if (cmd->fl_pipe)
+			open_empty_pipe(cmd->fd);
+		return ;
+	}
 	if ((ft_strequal(cmd->command, "cd")	\
 	|| ft_strequal(cmd->command, "exit")	\
 	|| ft_strequal(cmd->command, "export")	\
 	|| ft_strequal(cmd->command, "unset")) && !g_prepipe && !(cmd->fl_pipe))
-		execute_in_current_process(cmd, envp, tools);
-	else if (cmd->file_in || cmd->file_out)
-		execute_with_redirection(cmd, *envp, tools->tmp_fd);
+		execute_in_current_process(cmd, envp);
 	else if (cmd->fl_pipe)
-	{
-		pipe(cmd->fd);
 		execute_with_pipe(cmd, *envp);
-	}	
 	else
-		execute_no_redirection(cmd, *envp, tools->tmp_fd);
-	if (!(cmd->fl_pipe))	
-		g_prepipe = 0 ;
+		execute(cmd, *envp);
+	if (!cmd->fl_pipe)
+		dup2(tools->tmp_fd[0], 0);
+	dup2(tools->tmp_fd[1], 1);
+	g_prepipe = cmd->fl_pipe;
 }
