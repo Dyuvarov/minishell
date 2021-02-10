@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:32:37 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/10 17:19:07 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/10 19:05:07 by ugreyiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,7 @@ static void	execute(t_cmd *command, char **envp)
 	else
 	{
 		waitpid(pid, &status, WUNTRACED);
-		if (WTERMSIG(status))
-			g_last_res = 130;
-		else
+		if (g_last_res != 130 && g_last_res != 131)
 			g_last_res = WEXITSTATUS(status);
 	}
 }
@@ -70,7 +68,6 @@ static void	execute_with_pipe(t_cmd *cmd, char **envp)
 	int			exec_ret;
 	int			pid;
 	int			status;
-	extern int	g_last_res;
 
 	pipe(cmd->fd);
 	if ((pid = fork()) == 0)
@@ -90,14 +87,14 @@ static void	execute_with_pipe(t_cmd *cmd, char **envp)
 		close(cmd->fd[1]);
 		waitpid(pid, &status, WUNTRACED);
 		close(cmd->fd[0]);
-		g_last_res = WTERMSIG(status) ? 130 : WEXITSTATUS(status);
+		if (g_last_res != 130 && g_last_res != 131)
+			g_last_res = WEXITSTATUS(status);
 	}
 }
 
 void		executor(t_cmd *cmd, char ***envp, t_tools *tools)
 {
-	extern int	g_last_res;
-
+	g_last_res = 0;
 	signal(SIGINT, input_signal_handler);
 	signal(SIGQUIT, input_signal_handler);
 	g_prepipe = g_prepipe || cmd->fl_pipe;
