@@ -6,7 +6,7 @@
 /*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:32:37 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/10 19:05:07 by ugreyiro         ###   ########.fr       */
+/*   Updated: 2021/02/11 19:55:13 by ugreyiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,7 @@ static int	call_func(t_cmd *cmd, char **envp)
 	else if (ft_strequal(cmd->command, "pwd"))
 		exec_ret = ft_pwd();
 	else if ((exec_ret = execve(cmd->args[0], cmd->args, envp)) < 0)
-	{
-		exec_ret = 127;
-		handle_error(WRONG_COMMAND, cmd->command);
-	}
+		exec_ret = handle_error(WRONG_COMMAND, cmd->command);
 	return (exec_ret);
 }
 
@@ -58,8 +55,8 @@ static void	execute(t_cmd *command, char **envp)
 	else
 	{
 		waitpid(pid, &status, WUNTRACED);
-		if (g_last_res != 130 && g_last_res != 131)
-			g_last_res = WEXITSTATUS(status);
+		if (g_last_res < 126)
+			g_last_res = WEXITSTATUS(status);	
 	}
 }
 

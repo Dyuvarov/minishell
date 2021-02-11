@@ -6,7 +6,7 @@
 /*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:10:09 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/10 19:19:38 by ugreyiro         ###   ########.fr       */
+/*   Updated: 2021/02/10 19:27:41 by ugreyiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,11 @@ int			ft_env(char **args, char **env)
 		return (print_env_error(args[0]));
 	while (*env)
 	{
-		if ((eqsign = ft_strchr(*env, '=')))
-			if (ft_putendl_fd(*env++, 1) == -1)
+		eqsign = ft_strchr(*env, '=');
+		if (eqsign)
+			if (ft_putendl_fd(*env, 1) == -1)
 				return (errno);
+		env++;		
 	}
 	return (0);
 }
