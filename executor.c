@@ -6,7 +6,7 @@
 /*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:32:37 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/11 19:55:13 by ugreyiro         ###   ########.fr       */
+/*   Updated: 2021/02/11 20:07:04 by ugreyiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static void	execute_with_pipe(t_cmd *cmd, char **envp)
 		close(cmd->fd[1]);
 		waitpid(pid, &status, WUNTRACED);
 		close(cmd->fd[0]);
-		if (g_last_res != 130 && g_last_res != 131)
+		if (g_last_res < 126)
 			g_last_res = WEXITSTATUS(status);
 	}
 }

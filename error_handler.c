@@ -6,7 +6,7 @@
 /*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 12:25:49 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/11 19:49:36 by ugreyiro         ###   ########.fr       */
+/*   Updated: 2021/02/11 21:13:08 by ugreyiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ int			handle_error(int code, const char *command)
 		show_error_message(command, strerror(errno));
 	else if (code == FD_ERROR)
 		show_error_message(command, strerror(errno));
+	else if (code == SYMB_CODE)
+		show_error_message(command, "numeric argument required");
 	return (ret);
 }
 
@@ -85,7 +87,7 @@ void		handle_cd_error(char *path)
 	char	*err_str;
 	char	*err_tmp;
 
-	err_str = ft_strjoin("minishell: cd : ", path);
+	err_str = ft_strjoin("minishell: cd: ", path);
 	err_tmp = err_str;
 	err_str = ft_strjoin(err_str, ": ");
 	free(err_tmp);
@@ -97,4 +99,24 @@ void		handle_cd_error(char *path)
 	free(err_tmp);
 	write(1, err_str, ft_strlen(err_str));
 	free(err_str);
+}
+
+int		handle_exit_error(char *path)
+{
+	char	*err_str;
+	char	*err_tmp;
+
+	err_str = ft_strjoin("minishell: exit: ", path);
+	err_tmp = err_str;
+	err_str = ft_strjoin(err_str, ": ");
+	free(err_tmp);
+	err_tmp = err_str;
+	err_str = ft_strjoin(err_str, "numeric argument required");
+	free(err_tmp);
+	err_tmp = err_str;
+	err_str = ft_strjoin(err_str, "\n");
+	free(err_tmp);
+	write(1, err_str, ft_strlen(err_str));
+	free(err_str);
+	return (255);
 }

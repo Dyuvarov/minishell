@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:02:00 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/11 12:17:49 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/11 21:02:19 by ugreyiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define MANY_ARGS 2
 # define MALLOC_ERROR 3
 # define FD_ERROR 4
+# define SYMB_CODE 5
 
 # define SPEC_CHARS "\n><|;"
 # define REPLACE_M "\a"
