@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 21:00:57 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/10 21:24:42 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/11 11:00:04 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,14 @@ int				parse_escaped_seq(char **buf, int index, int esc_all)
 	}
 }
 
-int				parse_dollar_seq(char **buf, int index, char **env)
+int				parse_dollar_seq(char **buf, int index, \
+		char **env, char marker)
 {
 	int		i;
 	char	*dollar;
 
 	i = 0;
-	if ((dollar = parse_dollar(env)) == NULL)
+	if ((dollar = parse_dollar(env, marker)) == NULL)
 		return (0);
 	while (dollar[i])
 	{
@@ -79,7 +80,7 @@ static int		parse_seq_base(char **buf, int c, int i, char **env)
 	if (c == '\\')
 		n = parse_escaped_seq(buf, i, 1);
 	else if (c == '$')
-		n = parse_dollar_seq(buf, i, env);
+		n = parse_dollar_seq(buf, i, env, ENV_MWQ);
 	else if (c == '\'')
 		n = parse_squote(buf, i);
 	else if (c == '\"')

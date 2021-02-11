@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:05:49 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/10 21:26:06 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/11 12:16:45 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,18 @@ static char	*get_special_val(int c)
 		return (NULL);
 }
 
-static char	*save_as_env_var(char *name, char **env)
+static char	*save_as_env_var(char *name, char **env, char marker)
 {
+	char smarker[2];
 	char *tmp;
 	char *res;
 
 	(void)env;
-	if ((tmp = ft_strjoin(ENV_MARK, name)) == NULL)
+	smarker[0] = marker;
+	smarker[1] = '\0';
+	if ((tmp = ft_strjoin(smarker, name)) == NULL)
 		return (NULL);
-	res = ft_strjoin(tmp, ENV_MARK);
+	res = ft_strjoin(tmp, smarker);
 	free(tmp);
 	return (res);
 }
@@ -50,7 +53,7 @@ static char	*save_as_env_var(char *name, char **env)
 ** Returns: env variable or NULL (if ERROR, EOF or such env var doesn't exist)
 */
 
-char		*parse_dollar(char **env)
+char		*parse_dollar(char **env, char marker)
 {
 	int		i;
 	int		c;
@@ -69,7 +72,7 @@ char		*parse_dollar(char **env)
 			name[i++] = c;
 		}
 		name[i] = '\0';
-		res = save_as_env_var(name, env);
+		res = save_as_env_var(name, env, marker);
 	}
 	else
 		res = get_special_val(c);

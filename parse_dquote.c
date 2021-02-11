@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:05:49 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/05 11:30:11 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/11 10:34:03 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	parse_dquote_base(char **buf, int c, int i, char **env)
 	if (c == '\\')
 		n = parse_escaped_seq(buf, i, 0);
 	else if (c == '$')
-		n = parse_dollar_seq(buf, i, env);
+		n = parse_dollar_seq(buf, i, env, ENV_MDQ);
 	else
 	{
 		(*buf)[i] = c;

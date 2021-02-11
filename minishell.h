@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:02:00 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/10 21:18:48 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/11 12:17:49 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@
 
 # define SPEC_CHARS "\n><|;"
 # define REPLACE_M "\a"
-# define ENV_MARK "\f\f"
+# define ENV_MWQ 1
+# define ENV_MDQ 2
 
 typedef struct	s_cmd
 {
@@ -96,7 +97,8 @@ char			**clone_envp(char **envp);
 void			bubblesort(char **strs);
 char			*ft_strreplace(char *dst, const char *old, const char *new);
 int				prepare_cmd(t_cmd *cmd, char **env);
-void			**ft_join_dpoiner(void **dp1, void **dp2);
+char			**ft_join_dpoiner(char **dp1, char **dp2);
+int				ft_insert(char ***dst, char **src, int pos);
 int				repair_command(t_cmd *cmd);
 char			*replace_new_env(char *field, char **env);
 int				ft_getch(void);
@@ -106,11 +108,13 @@ int				free_dpointer(void ***p, size_t nmemb);
 int				free_dpointer_no_size(void **p);
 char			**parse_path(char **envp);
 int				parse_escaped_seq(char **buf, int index, int esc_all);
-int				parse_dollar_seq(char **buf, int index, char **env);
+int				parse_dollar_seq(char **buf, int index, \
+					char **env, char marker);
 char			*parse_seq(char **env);
 int				parse_squote(char **buf, int i);
 int				parse_dquote(char **buf, int i, char **env);
-char			*parse_dollar(char **env);
+char			*parse_dollar(char **env, char marker);
 t_cmd			**parse_cmd_line(char **env);
 void			free_cmd(t_cmd **cmd);
+char			*repair_field(char *f, char ***args, int *pos, char **env);
 #endif

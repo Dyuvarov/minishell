@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 16:06:26 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/10 21:28:47 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/11 18:21:37 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,38 +64,15 @@ void			bubblesort(char **strs)
 	}
 }
 
-char			*replace_new_env(char *field, char **env)
-{
-	int		start;
-	int		end;
-	char	*val;
-	char	*tmp;
-	char	*res;
-
-	if ((start = ft_indexof(field, ENV_MARK, 0)) == -1)
-		return (ft_strdup(field));
-	if ((end = ft_indexof(field, ENV_MARK, start + 1)) == -1)
-		return (ft_strdup(field));
-	field[end] = '\0';
-	val = get_env_var(field + start + ft_strlen(ENV_MARK), env);
-	val = val ? val : "";
-	field[start] = '\0';
-	if ((tmp = ft_strjoin(field, val)) == NULL)
-		return (NULL);
-	res = ft_strjoin(tmp, field + end + ft_strlen(ENV_MARK));
-	free(tmp);
-	return (res);
-}
-
-void			**ft_join_dpoiner(void **dp1, void **dp2)
+char			**ft_join_dpoiner(char **dp1, char **dp2)
 {
 	int		i;
 	int		sz;
-	void	**res;
+	char	**res;
 
 	i = 0;
-	sz = get_size((char **)dp1) + get_size((char **)dp2) + 1;
-	if ((res = (void **)malloc(sizeof(void *) * sz)) == NULL)
+	sz = get_size(dp1) + get_size(dp2) + 1;
+	if ((res = (char **)malloc(sizeof(char *) * sz)) == NULL)
 		return (NULL);
 	while (*dp1)
 		res[i++] = *dp1++;
@@ -105,28 +82,21 @@ void			**ft_join_dpoiner(void **dp1, void **dp2)
 	return (res);
 }
 
-int				repair_command(t_cmd *cmd)
+int				ft_insert(char ***dst, char **src, int pos)
 {
-	char		*tmp;
-	char		**tmp_dp;
-	char		**splt;
+	char	*s_on_pos;
+	char	**tmp;
+	char	**mid;
+	int		res;
 
-	if ((splt = ft_split(cmd->command, ' ')) && splt[1])
-	{
-		free(cmd->command);
-		cmd->command = splt[0];
-		tmp = cmd->args[0];
-		cmd->args[0] = splt[1];
-		splt[1] = tmp;
-		tmp_dp = cmd->args;
-		cmd->args = (char **)ft_join_dpoiner(\
-				(void **)(splt + 1), (void **)cmd->args);
-		free(tmp_dp);
-	}
-	else if (splt)
-		free(splt[0]);
-	free(splt);
-	if (!splt || !cmd->args)
-		return (1);
-	return (0);
+	tmp = *dst;
+	s_on_pos = tmp[pos];
+	tmp[pos] = NULL;
+	if ((mid = ft_join_dpoiner(tmp, src)) == NULL)
+		return (-1);
+	tmp[pos] = s_on_pos;
+	if ((*dst = ft_join_dpoiner(mid, tmp + pos)) == NULL)
+		return (-1);
+	res = (pos + get_size(src) + 1);
+	return (res);
 }

@@ -6,50 +6,65 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 11:41:18 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/10 21:19:04 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/11 18:22:32 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*replace_field(char *field, char *replace_val, char **env)
+static char	*replace_field(char *field, t_cmd *cmd, int *pos, char **env)
 {
-	char *tmp;
-	char *res;
+	char		*tmp;
+	char		*res;
+	char		*sval;
+	extern int	g_last_res;
 
-	tmp = field;
-	res = ft_strreplace(field, REPLACE_M, replace_val);
+	res = field;
+	tmp = NULL;
+	if ((sval = ft_itoa(g_last_res)) == NULL)
+		return (NULL);
+	while (tmp == NULL || !ft_strequal(res, tmp))
+	{
+		free(tmp);
+		tmp = res;
+		res = ft_strreplace(tmp, REPLACE_M, sval);
+	}
 	free(tmp);
-	tmp = replace_new_env(res, env);
-	free(res);
-	res = tmp;
+	tmp = res;
+	if (res)
+	{
+		res = repair_field(tmp, &cmd->args, pos, env);
+		free(tmp);
+	}
+	free(sval);
 	return (res);
 }
 
-static int	replace_dollar(t_cmd *cmd, int val, char **env)
+static int	replace_dollar(t_cmd *cmd, char **env)
 {
 	int		i;
-	char	*sval;
+	int		k;
+	char	*tmp;
 
-	if ((sval = ft_itoa(val)) == NULL)
-		return (1);
+	k = 0;
 	if (cmd->command)
-		if (!(cmd->command = replace_field(cmd->command, sval, env)))
+		if (!(cmd->command = replace_field(cmd->command, cmd, &k, env)))
 			return (1);
 	if (cmd->file_in)
-		if (!(cmd->file_in = replace_field(cmd->file_in, sval, env)))
+		if (!(cmd->file_in = replace_field(cmd->file_in, cmd, &k, env)))
 			return (1);
 	if (cmd->file_out)
-		if (!(cmd->file_out = replace_field(cmd->file_out, sval, env)))
+		if (!(cmd->file_out = replace_field(cmd->file_out, cmd, &k, env)))
 			return (1);
-	i = 0;
+	i = k;
 	while (cmd->args[i])
 	{
-		if ((cmd->args[i] = replace_field(cmd->args[i], sval, env)) == NULL)
+		if (!(tmp = replace_field(cmd->args[i], cmd, &k, env)))
 			return (1);
-		i++;
+		cmd->args[i] = tmp;
+		i = k == i ? i + 1 : k;
+		k = i;
 	}
-	free(sval);
 	return (0);
 }
 
@@ -57,10 +72,8 @@ int			prepare_cmd(t_cmd *cmd, char **env)
 {
 	int			err;
 	char		*tmp;
-	extern int	g_last_res;
 
-	err = replace_dollar(cmd, g_last_res, env);
-	err |= repair_command(cmd);
+	err = replace_dollar(cmd, env);
 	if ((tmp = get_abs_path_command(cmd->command, env)))
 	{
 		free(cmd->args[0]);
