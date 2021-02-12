@@ -6,7 +6,7 @@
 /*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:02:00 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/12 18:18:54 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/12 20:06:58 by ugreyiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,4 +122,5 @@ char			*parse_dollar(char **env, char marker);
 t_cmd			**parse_cmd_line(char **env);
 void			free_cmd(t_cmd **cmd);
 char			*repair_field(char *f, char ***args, int *pos, char **env);
+int				put_var_with_quotes(char *var);
 #endif

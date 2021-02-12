@@ -6,7 +6,7 @@
 /*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 22:17:01 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/12 18:55:29 by ugreyiro         ###   ########.fr       */
+/*   Updated: 2021/02/12 20:39:21 by ugreyiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int			change_evn_var(char *var, size_t name_size, char **env)
 	while (*env)
 	{
 		eqsign = ft_strchr(*env, '=');
-		if ((size_t)(eqsign - *env) == name_size)
+		if ((size_t)(eqsign - *env) == name_size || !eqsign)
 			if (ft_strncmp(*env, var, name_size) == 0)
 			{
 				free(*env);
@@ -66,7 +66,7 @@ static int	print_env(char **env)
 			free_dpointer_no_size((void **)clone);
 			return (errno);
 		}
-		if (ft_putendl_fd(clone[i], 1) == -1)
+		if (put_var_with_quotes(clone[i]) == -1)
 		{
 			free_dpointer_no_size((void **)clone);
 			return (errno);
