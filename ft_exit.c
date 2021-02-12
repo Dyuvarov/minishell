@@ -6,7 +6,7 @@
 /*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:35:33 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/11 21:11:03 by ugreyiro         ###   ########.fr       */
+/*   Updated: 2021/02/12 16:42:21 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_exit(char **args)
 	{
 		exit_code = ft_atoi(args[0]);
 		if (exit_code == 0 && (ft_strlen(args[0]) != 1))
-			exit_code = handle_exit_error(args[0]);	
+			exit_code = handle_exit_error(args[0]);
 	}
 	else
 		exit_code = 0;
