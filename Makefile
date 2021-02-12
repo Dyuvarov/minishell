@@ -6,7 +6,8 @@ TEMP		= parse_line.c parse_dquote.c parse_squote.c parse_dollar.c parse_utils.c 
 			  get_abs_path_command2.c minishell_utils.c minishell_utils2.c minishell_utils3.c set_last_red_file.c \
 			  cmd.c free_cmd.c ft_realloc.c free_dpointer.c error_handler.c signal_handler.c ft_cd.c ft_pwd.c \
 			  ft_env.c ft_exit.c ft_unset.c ft_export.c ft_echo.c ft_getch.c executor.c executor2.c repair_cmd.c \
-			  error_handler_command.c ft_export2.c repair_cmd2.c main.c
+			  error_handler_command.c ft_export2.c repair_cmd2.c set_last_red_file2.c main.c
+			  
 SRCS		= $(addprefix $(SRC_DIR)/, $(TEMP))
 OBJS		= $(SRCS:.c=.o)
 LIBFT_DIR	= libft
