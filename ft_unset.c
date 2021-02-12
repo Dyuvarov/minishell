@@ -6,7 +6,7 @@
 /*   By: ugreyiro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 10:32:28 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/05 14:08:02 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/12 19:13:13 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,9 @@ int			ft_unset(char **vars, char ***envp)
 			if (!is_correct_name(vars[i], name_sz))
 				return (error("minishell: unset: not a valid identifier"));
 			if (eqsign && name_sz == (size_t)(eqsign - env[j]) \
-					&& (ft_strncmp(env[j], vars[i], eqsign - env[j])) == 0)
-				return (restruct_envp(envp, j));
+					&& (ft_strncmp(env[j], vars[i], eqsign - env[j])) == 0
+						&& restruct_envp(envp, j))
+				return (1);
 		}
 	}
 	return (0);
