@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 10:34:30 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/11 18:17:11 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/12 16:29:51 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,11 @@ static char		*get_env(char *f, int start, char **env)
 	return (env_val);
 }
 
-static char		*join_tail(char **tail, char *new_tail, char c, char *env_val)
+static char		*join_tail(char **tail, char *new_tail, char c, int is_join)
 {
 	char *tmp;
 
-	if (c == ENV_MDQ || (env_val && !ft_isspace(env_val[0])))
+	if (c == ENV_MDQ || is_join)
 	{
 		tmp = *tail;
 		if ((*tail = ft_strjoin(tmp, new_tail)) == NULL)
@@ -87,7 +87,7 @@ char			*repair_field(char *f, char ***args, int *pos, char **env)
 {
 	int		i;
 	char	*head;
-	char	*env_val;
+	char	*enval;
 	char	**tail;
 	char	**pars;
 
@@ -97,19 +97,14 @@ char			*repair_field(char *f, char ***args, int *pos, char **env)
 	while (f[i] && head)
 		if (f[i] == ENV_MWQ || f[i] == ENV_MDQ)
 		{
-			env_val = get_env(f, i, env);
-			if ((pars = split_env(env_val, f[i])) == NULL)
+			enval = get_env(f, i, env);
+			if (!(pars = split_env(enval, f[i])) || (pars[0] \
+			&& !join_tail(tail, pars[0], f[i], is_join(*tail, enval))))
 				return (NULL);
-			if (pars[0] && join_tail(tail, pars[0], f[i], env_val) == NULL)
-				return (NULL);
-			if (pars[0] != NULL && pars[1] != NULL)
-			{
-				*pos = ft_insert(args, pars + 1, *pos + 1) - 1;
-				if (f[i] == ENV_MWQ && pars[1])
-					tail = (*args) + (*pos) - 1;
-			}
-			free(pars[0]);
-			free(pars);
+			if (f[i] == ENV_MWQ \
+			&& insert_new_args(pars, args, pos, from0(*tail, *pars, enval)))
+				tail = (*args) + (*pos);
+			free_tmp_splt(pars, 1);
 			i = ft_strchr(f + i + 1, f[i]) - f + 1;
 		}
 		else

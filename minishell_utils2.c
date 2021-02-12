@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 11:41:18 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/11 18:22:32 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/12 16:36:43 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int	replace_dollar(t_cmd *cmd, char **env)
 		if (!(tmp = replace_field(cmd->args[i], cmd, &k, env)))
 			return (1);
 		cmd->args[i] = tmp;
-		i = k == i ? i + 1 : k;
+		i = k == i ? i + 1 : k + 1;
 		k = i;
 	}
 	return (0);

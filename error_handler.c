@@ -6,7 +6,7 @@
 /*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 12:25:49 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/11 21:13:08 by ugreyiro         ###   ########.fr       */
+/*   Updated: 2021/02/12 16:50:15 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void		handle_cd_error(char *path)
 	free(err_str);
 }
 
-int		handle_exit_error(char *path)
+int			handle_exit_error(char *path)
 {
 	char	*err_str;
 	char	*err_tmp;
