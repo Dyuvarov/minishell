@@ -6,7 +6,7 @@
 /*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 22:17:01 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/12 17:18:25 by ugreyiro         ###   ########.fr       */
+/*   Updated: 2021/02/12 18:55:29 by ugreyiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	error(char *err_msg)
 	return (1);
 }
 
-static int	change_evn_var(char *var, size_t name_size, char **env)
+int			change_evn_var(char *var, size_t name_size, char **env)
 {
 	char	*eqsign;
 

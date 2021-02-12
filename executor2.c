@@ -6,21 +6,36 @@
 /*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 12:56:58 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/11 21:10:02 by ugreyiro         ###   ########.fr       */
+/*   Updated: 2021/02/12 18:05:43 by ugreyiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-int		execute_cd(char *new_path)
+int		execute_cd(char *new_path, char **env)
 {
-	int	res;
+	int		res;
+	char	*cur_pwd;
+	char	*var_path;
 
 	if (!new_path)
 		return (0);
+	cur_pwd = get_cur_path();
 	res = chdir(new_path);
 	if (res < 0)
 		handle_cd_error(new_path);
+	else
+	{
+		var_path = ft_strjoin("OLDPWD=", cur_pwd);
+		change_evn_var(var_path, 6, env);
+		free(var_path);
+		free(cur_pwd);
+		cur_pwd = get_cur_path();
+		var_path = ft_strjoin("PWD=", cur_pwd);
+		change_evn_var(var_path, 3, env);
+		free(var_path);
+	}
+	free(cur_pwd);
 	return (res < 0 ? 1 : 0);
 }
 
@@ -79,7 +94,7 @@ void	execute_in_current_process(t_cmd *cmd, char ***env)
 	extern int g_last_res;
 
 	if (ft_strequal(cmd->command, "cd"))
-		g_last_res = execute_cd(cmd->args[1]);
+		g_last_res = execute_cd(cmd->args[1], *env);
 	else if (ft_strequal(cmd->command, "unset"))
 		g_last_res = ft_unset(cmd->args + 1, env);
 	else if (ft_strequal(cmd->command, "export"))

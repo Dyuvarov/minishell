@@ -6,7 +6,7 @@
 /*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:31:37 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/12 16:40:41 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/12 17:46:33 by ugreyiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct	s_tools
 int				g_last_res;
 int				g_prepipe;
 
-int				execute_cd(char *new_path);
+int				execute_cd(char *new_path, char **env);
 int				open_redirect(t_cmd *cmd, int direct);
 void			open_empty_pipe(int tmp_fd[]);
 int				handle_redirect(t_cmd *cmd, int tmp_fd[]);
@@ -41,4 +41,5 @@ void			signal_handler(int sig);
 void			input_signal_handler(int sig);
 void			show_promt();
 int				minishell_exit();
+int				change_evn_var(char *var, size_t name_size, char **env);
 #endif

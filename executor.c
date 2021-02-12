@@ -6,7 +6,7 @@
 /*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:32:37 by ugreyiro          #+#    #+#             */
-/*   Updated: 2021/02/12 16:43:15 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/12 17:46:33 by ugreyiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	call_func(t_cmd *cmd, char **envp)
 	if (ft_strequal(cmd->command, "echo"))
 		exec_ret = ft_echo(args);
 	else if (ft_strequal(cmd->command, "cd"))
-		exec_ret = execute_cd(*args);
+		exec_ret = execute_cd(*args, envp);
 	else if (ft_strequal(cmd->command, "unset"))
 		exec_ret = ft_unset(args, &envp);
 	else if (ft_strequal(cmd->command, "exit"))
