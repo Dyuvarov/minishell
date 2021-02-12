@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 16:06:26 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/11 18:21:37 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/12 16:36:40 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,19 @@ int				ft_insert(char ***dst, char **src, int pos)
 	int		res;
 
 	tmp = *dst;
-	s_on_pos = tmp[pos];
-	tmp[pos] = NULL;
-	if ((mid = ft_join_dpoiner(tmp, src)) == NULL)
-		return (-1);
-	tmp[pos] = s_on_pos;
-	if ((*dst = ft_join_dpoiner(mid, tmp + pos)) == NULL)
-		return (-1);
-	res = (pos + get_size(src) + 1);
+	if ((s_on_pos = tmp[pos]) != NULL)
+	{
+		tmp[pos] = NULL;
+		if ((mid = ft_join_dpoiner(tmp, src)) == NULL)
+			return (-1);
+		tmp[pos] = s_on_pos;
+		if ((*dst = ft_join_dpoiner(mid, tmp + pos)) == NULL)
+			return (-1);
+		free(mid);
+	}
+	else if ((*dst = ft_join_dpoiner(tmp, src)) == NULL)
+			return (-1);
+	free(tmp);
+	res = (pos + get_size(src));
 	return (res);
 }
