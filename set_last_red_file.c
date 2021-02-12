@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 16:18:12 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/08 19:40:58 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/12 19:59:06 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	set_new_direct(t_cmd *true_cmd, t_cmd *file_cmd)
 	true_cmd->fl_pipe = true_cmd->fl_pipe || file_cmd->fl_pipe;
 }
 
-static int	set_file(t_cmd *true_cmd, t_cmd *file_cmd)
+static char	*set_file(t_cmd *true_cmd, t_cmd *file_cmd)
 {
 	int fd;
 
@@ -72,27 +72,35 @@ static int	set_file(t_cmd *true_cmd, t_cmd *file_cmd)
 	{
 		swap_files(true_cmd, file_cmd);
 		if (file_cmd->file_in)
+		{
 			fd = open(file_cmd->file_in, O_CREAT | O_WRONLY \
 					| (file_cmd->fl_append ? O_APPEND : O_TRUNC), 0666);
+			if (fd < 0)
+				return (file_cmd->file_in);
+		}
 		else
+		{
 			fd = open(file_cmd->file_out, O_RDONLY);
-		if (fd < 0)
-			return (-1);
-		return (close(fd));
+			if (fd < 0)
+				return (file_cmd->file_out);
+		}
+		close(fd);
 	}
-	return (0);
+	return (NULL);
 }
 
 int			set_last_red_file(t_cmd **cmd)
 {
 	int		i;
-	int		err;
+	char	*incorrect_file;
 	t_cmd	*true_cmd;
 
 	i = -1;
 	true_cmd = NULL;
 	while (cmd[++i])
 	{
+		if (is_empty_files(cmd[i]->file_in, cmd[i]->file_out))
+			return (syntax_error(cmd[i]));
 		if (cmd[i]->command[0] != '\0')
 			true_cmd = cmd[i];
 		else if (true_cmd != NULL && (cmd[i]->file_in || cmd[i]->file_out))
@@ -100,11 +108,9 @@ int			set_last_red_file(t_cmd **cmd)
 			merge_dpointer((void ***)&true_cmd->args, \
 					(void **)cmd[i]->args + 1);
 			cmd[i]->args[1] = NULL;
-			err = set_file(true_cmd, cmd[i]);
+			if ((incorrect_file = set_file(true_cmd, cmd[i])) != NULL)
+				return (handle_error(FD_ERROR, incorrect_file));
 			del_elem(cmd, i--);
-			if (err != 0)
-				return (handle_error(FD_ERROR, cmd[i]->file_in ? \
-						cmd[i]->file_in : cmd[i]->file_out));
 		}
 		else
 			return (handle_error(WRONG_COMMAND, cmd[i]->command));

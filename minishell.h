@@ -6,7 +6,7 @@
 /*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:02:00 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/12 18:18:54 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/12 19:37:43 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ char			*get_env_var(char *name, char **env);
 char			*get_abs_path(char *dir, char *file_name);
 char			*get_abs_parent(char *dir);
 char			*get_abs_path_command(char *cmd, char **env);
+int				is_empty_files(char *file_in, char *file_out);
+int				syntax_error(t_cmd *cmd);
 int				set_last_red_file(t_cmd **cmd);
 int				is_eof(void);
 int				get_size(char **buf);
