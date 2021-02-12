@@ -6,7 +6,7 @@
 /*   By: ugreyiro <ugreyiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:02:00 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/12 13:18:02 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/12 18:18:54 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,8 @@ char			**ft_join_dpoiner(char **dp1, char **dp2);
 int				ft_insert(char ***dst, char **src, int pos);
 int				insert_new_args(char **new, char ***args_buf, \
 					int *pos, int from_zero);
-int				is_join(char *tail, char *env_val);
-int				from0(char *tail, char *arg0, char *env_val);
-int				free_tmp_splt(char **splt, int free_zero);
+int				is_join(char *tail, char *env_val, int last_res);
+int				free_tmp_splt(char ***splt, int free_zero);
 int				repair_command(t_cmd *cmd);
 char			*replace_new_env(char *field, char **env);
 int				ft_getch(void);

@@ -6,7 +6,7 @@
 /*   By: fmoaney <fmoaney@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 10:34:30 by fmoaney           #+#    #+#             */
-/*   Updated: 2021/02/12 16:29:51 by fmoaney          ###   ########.fr       */
+/*   Updated: 2021/02/12 18:26:43 by fmoaney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,12 @@ char			*repair_field(char *f, char ***args, int *pos, char **env)
 		{
 			enval = get_env(f, i, env);
 			if (!(pars = split_env(enval, f[i])) || (pars[0] \
-			&& !join_tail(tail, pars[0], f[i], is_join(*tail, enval))))
+			&& !join_tail(tail, pars[0], f[i], is_join(*tail, enval, 0))))
 				return (NULL);
 			if (f[i] == ENV_MWQ \
-			&& insert_new_args(pars, args, pos, from0(*tail, *pars, enval)))
+			&& insert_new_args(pars, args, pos, !is_join(*tail, enval, 1)))
 				tail = (*args) + (*pos);
-			free_tmp_splt(pars, 1);
+			free_tmp_splt(&pars, is_join(*tail, enval, 1));
 			i = ft_strchr(f + i + 1, f[i]) - f + 1;
 		}
 		else
