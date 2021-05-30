@@ -19,4 +19,4 @@ It handles:
 1) run "make" in the root
 2) execute ./minishell
 
-![Alt text](gif.gif)
+![Alt text](mshl.gif)
